@@ -1,0 +1,12 @@
+# Exécutables
+*.exe
+library_manager    # Le nom de ton binaire final
+
+# Objets et bibliothèques
+*.o
+*.a
+*.so
+
+# Dossiers de build (si tu utilises CMake plus tard)
+build/
+.vscode/           # Si tu utilises VS Code
