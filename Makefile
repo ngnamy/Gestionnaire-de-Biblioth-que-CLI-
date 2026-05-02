@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror -g -Iinclude
 LDFLAGS = -lm
 SOURCES = src/main.c src/livre.c src/bibliotheque.c src/membres.c
 OBJECTS = $(SOURCES:.c=.o)

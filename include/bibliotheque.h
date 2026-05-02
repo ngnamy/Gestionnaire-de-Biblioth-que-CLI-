@@ -1,8 +1,8 @@
 #ifndef BIBLIOTHEQUE_H
 #define BIBLIOTHEQUE_H
 
-#include "../include/livre.h"
-#include "../include/membres.h"
+#include "livre.h"
+#include "membres.h"
 
 #define MAX_TAILLE_FICHIER 50
 #define MAX_EMPRUNTS_MEMBRE 3
@@ -113,7 +113,7 @@ void sauvegarder_bibliotheque(const Bibliotheque *bibliotheque);
 /**
  * @brief Fonction pour charger les informations de la bibliothèque à partir d'un fichier.
  * Elle prend en paramètre un pointeur vers une structure Bibliotheque et lit les informations de tous les livres présents dans un fichier spécifié par le champ nom_fichier de la structure Bibliotheque, en utilisant la fonction saisir_livre pour remplir les détails de chaque livre à partir des données lues dans le fichier, et ajoute chaque livre chargé à la bibliothèque en utilisant la fonction ajouter_livre.
- * @param bibliotheque Un pointeur vers une structure Bibliotheque dans laquelle les informations seront chargées à partir d'un fichier.
+ * @param bibliotheque Un pointeur vers une structure Bibliotheque dans laquelle les informations seront chargées.
  * @return void
  */
 void charger_bibliotheque(Bibliotheque *bibliotheque);
@@ -121,51 +121,54 @@ void charger_bibliotheque(Bibliotheque *bibliotheque);
 /**
  * @brief Fonction pour effectuer un emprunt de livre dans la bibliothèque.
  * Elle prend en paramètre un pointeur vers une structure Bibliotheque, un entier représentant l'identifiant du livre à emprunter, et un entier représentant l'identifiant du membre qui emprunte le livre, vérifie si le livre est disponible pour l'emprunt, met à jour les informations du livre pour indiquer qu'il est emprunté et associe l'identifiant du membre emprunteur au livre, et gère les cas où le livre n'est pas disponible ou où le membre a atteint la limite d'emprunts actifs.
- * @param b Un pointeur vers une structure Bibliotheque dans laquelle l'emprunt sera effectué.
+ * @param bibliotheque Un pointeur vers une structure Bibliotheque dans laquelle l'emprunt sera effectué.
  * @param id_livre L'identifiant du livre à emprunter dans la bibliothèque.
  * @param id_membre L'identifiant du membre qui emprunte le livre dans la bibliothèque.
  * @return void
  */
-void effectuer_emprunt(Bibliotheque *b, int id_livre, int id_membre);
+void effectuer_emprunt(Bibliotheque *bibliotheque, int id_livre, int id_membre);
 
 /**
  * @brief Fonction pour effectuer un retour de livre dans la bibliothèque.
  * Elle prend en paramètre un pointeur vers une structure Bibliotheque et un entier représentant l'identifiant du livre à retourner, vérifie si le livre est actuellement emprunté, met à jour les informations du livre pour indiquer qu'il est disponible et dissocie l'identifiant du membre emprunteur du livre, et gère les cas où le livre n'est pas actuellement emprunté ou où l'identifiant du livre spécifié n'existe pas dans la bibliothèque.
- * @param b Un pointeur vers une structure Bibliotheque dans laquelle le retour sera effectué.
+ * @param bibliotheque Un pointeur vers une structure Bibliotheque dans laquelle le retour sera effectué.
  * @param id_livre L'identifiant du livre à retourner dans la bibliothèque.
  * @return void
  */
-void effectuer_retour(Bibliotheque *b, int id_livre);
+void effectuer_retour(Bibliotheque *bibliotheque, int id_livre);
 
 /**
  * @brief Fonction pour lister les livres en retard.
  * Elle prend en paramètre un pointeur vers une structure Bibliotheque et une chaîne de caractères représentant la date actuelle, et affiche les informations des livres qui sont en retard de retour.
- * @param b Un pointeur vers une structure Bibliotheque contenant les livres à vérifier.
+ * @param bibliotheque Un pointeur vers une structure Bibliotheque contenant les livres à vérifier.
  * @param date_actuelle Une chaîne de caractères représentant la date actuelle au format "YYYY-MM-DD".
  * @return void
  */
-void lister_livres_en_retard(const Bibliotheque *b, const char *date_actuelle);
+void lister_livres_en_retard(const Bibliotheque *bibliotheque, const char *date_actuelle);
 
 /**
  * @brief Fonction pour inscrire un nouveau membre dans la bibliothèque.
  * Elle prend en paramètre un pointeur vers une structure Bibliotheque et permet d'ajouter un nouveau membre à la bibliothèque.
- * @param bibliothèque Un pointeur vers une structure Bibliotheque dans laquelle le nouveau membre sera inscrit.
+ * @param bibliotheque Un pointeur vers une structure Bibliotheque dans laquelle le nouveau membre sera inscrit.
  * @return void
  */
-void inscrire_membre(Bibliotheque *bibliothèque);
+void inscrire_membre(Bibliotheque *bibliotheque);
 
 /**
  * @brief Fonction pour rechercher un membre dans la bibliothèque.
- * Elle prend en paramètre un pointeur vers une structure Bibliotheque et un entier représentant l'identifiant du membre à rechercher, et retourne un pointeur vers la structure Membre si le membre est trouvé, ou NULL sinon.
- * @param bibliothèque Un pointeur vers une structure Bibliotheque contenant les membres à rechercher.
+ * Elle prend en paramètre un pointeur vers une structure Bibliotheque et un entier représentant l'identifiant du membre à rechercher, et retourne l'index du membre ou -1 si non trouvé.
+ * @param bibliotheque Un pointeur vers une structure Bibliotheque contenant les membres à rechercher.
  * @param id_membre L'identifiant du membre à rechercher dans la bibliothèque.
- * @return Un pointeur vers la structure Membre si le membre est trouvé, ou NULL sinon.
+ * @return L'index du membre trouvé dans le tableau de membres ou -1 si aucun membre avec l'identifiant spécifié n'est trouvé.
  */
-int rechercher_membre(const Bibliotheque *bibliothèque, int id_membre);
+int rechercher_membre(const Bibliotheque *bibliotheque, int id_membre);
 
 /**
  * @brief Fonction pour radier un membre de la bibliothèque.
  * Elle prend en paramètre un pointeur vers une structure Bibliotheque et un entier représentant l'identifiant du membre à radier, et supprime le membre correspondant de la bibliothèque en réorganisant les données des membres pour combler l'espace laissé par le membre radié, et gère les cas où le membre à radier n'existe pas ou a des emprunts actifs en
+ * @param bibliotheque Un pointeur vers une structure Bibliotheque.
+ * @param id_membre L'identifiant du membre à radier.
+ * @return void
  */
-void radier_membre(Bibliotheque *b, int id_membre);
+void radier_membre(Bibliotheque *bibliotheque, int id_membre);
 #endif

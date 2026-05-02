@@ -1,7 +1,7 @@
-#include <stdio.h>
-
 #ifndef MEMBRES_H
 #define MEMBRES_H
+
+#include <stdio.h>
 
 #define MAX_NOM_MEMBRE 50
 #define MAX_TEL_MEMBRE 20
