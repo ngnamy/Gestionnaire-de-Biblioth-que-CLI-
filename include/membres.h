@@ -1,7 +1,8 @@
+#include <stdio.h>
+
 #ifndef MEMBRES_H
 #define MEMBRES_H
 
-#define MAX_NOM_MEMBRE 50
 #define MAX_NOM_MEMBRE 50
 #define MAX_TEL_MEMBRE 20
 #define TAILLE_DATE 11
@@ -39,5 +40,14 @@ void saisir_membre(Membre *membre, int prochain_id);
  * @return void
  */
 void afficher_membre(const Membre *membre);
+
+/**
+ * @brief Fonction pour sauvegarder les informations d'un membre dans un fichier.
+ * Elle prend en paramètre un pointeur vers une structure Membre et un pointeur vers un fichier ouvert en écriture.
+ * @param membre Un pointeur vers la structure Membre à sauvegarder.
+ * @param fichier Un pointeur vers le fichier ouvert (en mode binaire "ab" ou "wb").
+ * @return void
+ */
+void sauvegarder_membre(const Membre *membre, FILE *fichier);
 
 #endif
