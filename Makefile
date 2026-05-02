@@ -1,7 +1,7 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror -g
 LDFLAGS = -lm
-SOURCES = src/main.c src/livre.c src/bibliotheque.c
+SOURCES = src/main.c src/livre.c src/bibliotheque.c src/membres.c
 OBJECTS = $(SOURCES:.c=.o)
 EXECUTABLE = start
 all: $(EXECUTABLE)

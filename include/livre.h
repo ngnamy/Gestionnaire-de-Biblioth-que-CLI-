@@ -7,22 +7,27 @@
 #include <stdio.h>
 
 /**
- * Structure représentant un livre dans la bibliothèque.
+ * @brief Structure représentant un livre de la bibliothèque.
  * Elle contient les informations suivantes :
- * - id : un identifiant unique pour chaque livre
- * - titre : le titre du livre
- * - auteur : le nom de l'auteur du livre
- * - annee_publication : l'année de publication du livre
- * - prix : le prix du livre
- * - quantite : la quantité de ce livre disponible dans la bibliothèque
+ * @param id Un identifiant unique pour chaque livre de la bibliothèque, utilisé pour différencier les livres et faciliter la gestion des emprunts et des retours.
+ * @param isbn Un tableau de caractères de taille 20 représentant le numéro ISBN du livre, utilisé pour identifier de manière unique le livre dans la bibliothèque et faciliter la recherche et l'organisation des livres.
+ * @param titre Un tableau de caractères de taille 100 représentant le titre du livre, utilisé pour afficher le titre du livre dans la bibliothèque et faciliter la recherche et l'identification des livres par les utilisateurs.
+ * @param auteur Un tableau de caractères de taille 50 représentant le nom de l'auteur du livre, utilisé pour afficher le nom de l'auteur dans la bibliothèque et faciliter la recherche et l'identification des livres par les utilisateurs.
+ * @param annee_publication Un entier représentant l'année de publication du livre, utilisé pour afficher l'année de publication dans la bibliothèque et faciliter la recherche et l'identification des livres par les utilisateurs.
+ * @param est_emprunte Un entier représentant si le livre est actuellement emprunté (1) ou disponible (0), utilisé pour gérer l'état d'emprunt du livre dans la bibliothèque et éviter les conflits lors des emprunts et des retours.
+ * @param id_emprunteur Un entier représentant l'identifiant du membre qui a emprunté le livre (ou -1 si le livre n'est pas emprunté), utilisé pour suivre quel membre a emprunté le livre et faciliter la gestion des emprunts et des retours dans la bibliothèque.
+ * @param date_echeance Un tableau de caractères de taille 11 représentant la date d'échéance du retour du livre au format "YYYY-MM-DD", utilisé pour suivre la date limite de retour du livre et gérer les notifications liées aux retours dans la bibliothèque.
  */
 typedef struct {
     int id;
-    char titre[TAILLE_MAX_TITRE];
-    char auteur[TAILLE_MAX_AUTEUR];
+    char isbn[20];
+    char titre[100];
+    char auteur[50];
     int annee_publication;
-    float prix;
-    int quantite;
+    
+    int est_emprunte;
+    int id_emprunteur;
+    char date_echeance[11];
 } Livre;
 
 /**
