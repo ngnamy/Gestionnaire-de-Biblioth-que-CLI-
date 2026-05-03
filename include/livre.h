@@ -4,6 +4,7 @@
 #define  TAILLE_MAX_TITRE 100
 #define  TAILLE_MAX_AUTEUR 50
 #define  TAILLE_MAX_DATE 11
+#define  TAILLE_MAX_ISBN 14
 
 #include <stdio.h>
 
@@ -21,7 +22,7 @@
  */
 typedef struct {
     int id;
-    char *isbn;
+    char isbn[TAILLE_MAX_ISBN];
     char titre[TAILLE_MAX_TITRE];
     char auteur[TAILLE_MAX_AUTEUR];
     int annee_publication;
@@ -76,5 +77,13 @@ void sauvegarder_livre(const Livre *livre, FILE *fichier);
  * @return 1 si l'ISBN est valide, 0 sinon.
  */
 int est_isbn_valide(const char *isbn, int taille);
+
+/**
+ * @brief Fonction pour générer un identifiant unique pour un livre.
+ * @param structure_livre Un pointeur vers le premier livre du tableau
+ * @param taille Le nombre actuel de livres
+ * @return Un entier représentant l'identifiant du livre
+ */
+int generer_id_livre(Livre *structure_livre, int taille);
 
 #endif // LIVRE_H

@@ -15,16 +15,17 @@ int main () {
 
     saisir_livre (nouveau_livre);
 
-    printf("=== Les informations liées au nouveau livre ===");
+    printf("\n=== Les informations liées au nouveau livre ===\n");
 
-    printf("ID: %d\n"
+    printf(
+            "ID: %d\n"
             "Isbn: %s\n"
             "Titre: %s\n"
             "Auteur: %s\n"
             "Année publication: %d\n"
             "Est emprunté: %d\n"
             "Id emprunteur: %d\n"
-            "Date échéance: %s",
+            "Date échéance: %s\n",
             nouveau_livre->id,
             nouveau_livre->isbn,
             nouveau_livre->titre,
@@ -35,5 +36,6 @@ int main () {
             nouveau_livre->date_echeance    
         );
 
+    free(nouveau_livre);
     return 0;
 }

@@ -1,5 +1,6 @@
-
 #include <time.h>
+#include  <stdlib.h>
+#include <stdio.h>
 #include "../include/utilitaire.h"
 
 int annee_actuelle () {
@@ -11,10 +12,14 @@ int annee_actuelle () {
     return -1;
 }
 
-
 void calculer_echeance(char *date_echeance) {
     time_t maintenant = time(NULL);
     struct tm *echeance = localtime(&maintenant);
+
+    if (echeance == NULL) {
+        snprintf(date_echeance, 11, "0000-00-00");
+        return;
+    }
 
     // On ajoute la durée
     echeance->tm_mday += DUREE_EMPRUNT;
@@ -30,4 +35,9 @@ void calculer_echeance(char *date_echeance) {
 
     // On formate en YYYY-MM-DD
     strftime(date_echeance, 11, "%Y-%m-%d", echeance);
+}
+
+void vider_buffer() {
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF);
 }
