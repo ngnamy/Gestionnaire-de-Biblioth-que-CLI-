@@ -146,3 +146,27 @@ void afficher_livre(const Livre *livre) {
     }
     printf("--------------------------------------------------\n");
 }
+
+int comparer_livres(const Livre *livre_a, const Livre *livre_b) {
+    if (livre_a == NULL || livre_b == NULL) {
+        fprintf(stderr, "Erreur : Impossible de comparer des livres lorsque l'un d'eux est NULL.\n");
+        return 0; // On peut choisir de les considérer égaux ou de retourner une erreur
+    }
+    return strcmp(livre_a->titre, livre_b->titre);
+}
+
+void sauvegarder_livre(const Livre *livre, FILE *fichier) {
+    if (livre == NULL || fichier == NULL) {
+        fprintf(stderr, "Erreur : Impossible de sauvegarder un livre ou d'écrire dans un fichier NULL.\n");
+        return;
+    }
+    fprintf(fichier, "%d|%s|%s|%s|%d|%d|%d|%s\n",
+            livre->id,
+            livre->isbn,
+            livre->titre,
+            livre->auteur,
+            livre->annee_publication,
+            livre->est_emprunte,
+            livre->id_emprunteur,
+            livre->date_echeance);
+}
