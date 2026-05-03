@@ -13,7 +13,7 @@ int main () {
         return 1;
     }
 
-    saisir_livre (nouveau_livre);
+    saisir_livre (nouveau_livre, 2);
 
     printf("\n=== Les informations liées au nouveau livre ===\n");
 

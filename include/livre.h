@@ -37,9 +37,10 @@ typedef struct {
  * Elle prend en paramètre un pointeur vers une structure Livre
  * et remplit les champs de cette structure avec les données saisies par l'utilisateur.
  * @param livre Un pointeur vers une structure Livre à remplir avec les données saisies par l'utilisateur.
+ * @param prochain_id Un entier qui représente le prochain identifiant
  * @return void
  */
-void saisir_livre(Livre *livre);
+void saisir_livre(Livre *livre, int prochain_id);
 
 /**
  * Fonction pour afficher les informations d'un livre.
@@ -76,14 +77,6 @@ void sauvegarder_livre(const Livre *livre, FILE *fichier);
  * @param isbn Un pointeur vers une chaîne de caractères représentant un ISBN.
  * @return 1 si l'ISBN est valide, 0 sinon.
  */
-int est_isbn_valide(const char *isbn, int taille);
-
-/**
- * @brief Fonction pour générer un identifiant unique pour un livre.
- * @param structure_livre Un pointeur vers le premier livre du tableau
- * @param taille Le nombre actuel de livres
- * @return Un entier représentant l'identifiant du livre
- */
-int generer_id_livre(Livre *structure_livre, int taille);
+int est_isbn_valide(const char *isbn, int type);
 
 #endif // LIVRE_H

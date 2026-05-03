@@ -12,6 +12,7 @@
  * Elle contient les informations suivantes :
  * @param livres Un tableau dynamique de structures Livre représentant les livres disponibles dans la bibliothèque.
  * @param nb_livres Le nombre de livres actuellement présents dans la bibliothèque.
+ * @param prochain_id_livre Un entier représentant le prochain identifiant à attribuer à un nouveau livre ajouté à la bibliothèque, utilisé pour garantir l'unicité des identifiants des livres dans la bibliothèque.
  * @param capacite_livres La capacité maximale du tableau de livres, utilisée pour gérer la mémoire dynamique.
  * @param membres Un tableau dynamique de structures Membre représentant les membres inscrits dans la bibliothèque.
  * @param nb_membres Le nombre de membres actuellement inscrits dans la bibliothèque.
@@ -22,6 +23,7 @@
 typedef struct {
     Livre *livres;
     int nb_livres;
+    int prochain_id_livre;
     int capacite_livres;
 
     Membre *membres;
@@ -171,4 +173,12 @@ int rechercher_membre(const Bibliotheque *bibliotheque, int id_membre);
  * @return void
  */
 void radier_membre(Bibliotheque *bibliotheque, int id_membre);
+
+/**
+ * @brief Fonction pour trier les membres de la bibliothèque par ordre alphabétique de leur nom.
+ * Elle prend en paramètre un pointeur vers une structure Bibliotheque et trie le tableau de membres de la bibliothèque en utilisant la fonction comparer_membres pour comparer les noms des membres et les réorganiser dans l'ordre alphabétique.
+ * @param bibliotheque Un pointeur vers une structure Bibliotheque dont les membres seront triés.
+ * @return void
+ */
+int generer_id_livre(const Livre *livres, int nb_livres);
 #endif
