@@ -3,6 +3,7 @@
 
 #define  TAILLE_MAX_TITRE 100
 #define  TAILLE_MAX_AUTEUR 50
+#define  TAILLE_MAX_DATE 11
 
 #include <stdio.h>
 
@@ -20,18 +21,18 @@
  */
 typedef struct {
     int id;
-    char isbn[20];
-    char titre[100];
-    char auteur[50];
+    char *isbn;
+    char titre[TAILLE_MAX_TITRE];
+    char auteur[TAILLE_MAX_AUTEUR];
     int annee_publication;
-    
+
     int est_emprunte;
     int id_emprunteur;
-    char date_echeance[11];
+    char date_echeance[TAILLE_MAX_DATE];
 } Livre;
 
 /**
- * Fonction pour saisir les informations d'un livre.
+ * @brief Fonction pour saisir les informations d'un livre.
  * Elle prend en paramètre un pointeur vers une structure Livre
  * et remplit les champs de cette structure avec les données saisies par l'utilisateur.
  * @param livre Un pointeur vers une structure Livre à remplir avec les données saisies par l'utilisateur.
@@ -60,12 +61,20 @@ void afficher_livre(const Livre *livre);
 int comparer_livres(const Livre *livre_a, const Livre *livre_b);
 
 /**
- * Fonction pour sauvegarder les informations d'un livre dans un fichier.
+ * @brief Fonction pour sauvegarder les informations d'un livre dans un fichier.
  * Elle prend en paramètre un pointeur vers une structure Livre et un pointeur vers un fichier ouvert en écriture, et écrit les champs de la structure Livre dans le fichier de manière formatée.
  * @param livre Un pointeur vers une structure Livre dont les informations seront sauvegardées dans le fichier.
  * @param fichier Un pointeur vers un fichier ouvert en écriture où les informations du livre seront sauvegardées.
  * @return void
  */
 void sauvegarder_livre(const Livre *livre, FILE *fichier);
+
+/**
+ * @brief Fonction pour vérifier si un ISBN est valide.
+ * Elle prend en paramètre un pointeur vers une chaîne de caractères représentant un ISBN, et retourne 1 si l'ISBN est valide, 0 sinon.
+ * @param isbn Un pointeur vers une chaîne de caractères représentant un ISBN.
+ * @return 1 si l'ISBN est valide, 0 sinon.
+ */
+int est_isbn_valide(const char *isbn, int taille);
 
 #endif // LIVRE_H
