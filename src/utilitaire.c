@@ -1,7 +1,10 @@
 #include <time.h>
 #include  <stdlib.h>
 #include <stdio.h>
+#include  <string.h>
 #include "../include/utilitaire.h"
+
+#include <ctype.h>
 
 int annee_actuelle () {
     time_t t = time(NULL);
@@ -40,4 +43,67 @@ void calculer_echeance(char *date_echeance) {
 void vider_buffer() {
     int c;
     while ((c = getchar()) != '\n' && c != EOF);
+}
+
+int valider_numero(const char *numero) {
+    // 1. Vérification de la longueur (9 chiffres exactement)
+    if (strlen(numero) != 9) {
+        return 0;
+    }
+
+    // 2. Vérification du premier chiffre (6 pour mobile, 2 pour fixe)
+    if (numero[0] != '6' && numero[0] != '2') {
+        return 0;
+    }
+
+    // 3. Vérification que tout le reste sont des chiffres
+    for (int i = 0; i < 9; i++) {
+        if (!isdigit(numero[i])) {
+            return 0;
+        }
+    }
+
+    return 1;
+}
+
+int isLeapYear(int year) {
+    return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
+}
+
+int valider_date (const char *date){
+    int y, m, d;
+
+    // 1. Vérifier la longueur de la chaîne (doit être "YYYY-MM-DD", donc 10 caractères)
+    if (strlen(date) != 10) {
+        return 0;
+    }
+
+    // 2. Vérifier la présence des tirets aux bonnes positions
+    if (date[4] != '-' || date[7] != '-') {
+        return 0;
+    }
+
+    // 3. Tenter de parser la date. Utiliser %d pour permettre des mois/jours à un chiffre
+    if (sscanf(date, "%d-%d-%d", &y, &m, &d) != 3) {
+        return 0;
+    }
+
+    // 4. Vérifier les limites de mois et jour
+    if (m < 1 || m > 12 || d < 1 || d > 31) {
+        return 0;
+    }
+
+    // 5. Vérifier les jours par mois
+    if (m == 4 || m == 6 || m == 9 || m == 11) { // Avril, Juin, Septembre, Novembre ont 30 jours
+        if (d > 30) return 0;
+    } else if (m == 2) { // Février
+        if (isLeapYear(y)) {
+            if (d > 29) return 0; // Année bissextile, Février a 29 jours
+        } else {
+            if (d > 28) return 0; // Année non bissextile, Février a 28 jours
+        }
+    }
+
+    // Si toutes les vérifications passent
+    return 1;
 }

@@ -23,4 +23,25 @@ void calculer_echeance (char *date_echeance);
  */
 void vider_buffer();
 
+/**
+ * @brief Fonction permettant de valider le format d'un numéro de téléphone.
+ * @param numero Numéro de téléphone à valider.
+ * @return retourne un entier 1 représentant le succès et 0 l'échec de validation.
+ */
+int valider_numero (const char *numero);
+
+/**
+ * @brief Fonction pour vérifier si une année est bissextile
+ * @param year
+ * @return Un entier 1 représentant le succès et 0 l'échec.
+ */
+int isLeapYear(int year);
+
+/**
+ * @brief Fonction qui permet de valider une date au format YYYY-MM-DD
+ * @param date Un pointeur vers la date à valider
+ * @return Un entier 1 représentant le succès et 0 l'échec de validation.
+ */
+int valider_date (const char *date);
+
 #endif

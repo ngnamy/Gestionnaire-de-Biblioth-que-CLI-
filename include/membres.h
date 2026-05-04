@@ -4,8 +4,8 @@
 #include <stdio.h>
 
 #define MAX_NOM_MEMBRE 50
-#define MAX_TEL_MEMBRE 20
-#define TAILLE_DATE 11
+#define MAX_TEL_MEMBRE 11
+#define TAILLE_DATE 12 // Changed from 11 to 12 to accommodate "YYYY-MM-DD\n\0"
 
 /**
  * @brief Structure représentant un membre de la bibliothèque.
