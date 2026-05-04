@@ -1,6 +1,5 @@
 #include "membres.h"
 
-#include "../include/livre.h"
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -75,4 +74,20 @@ void afficher_membre(const Membre *membre) {
     }
 
     printf("--------------------------------------------------\n");
+}
+
+void sauvegarder_membre (const Membre *membre, FILE *fichier) {
+    if (membre == NULL || fichier == NULL) {
+        fprintf(stderr, "Impossible de sauvegarder le membre ou d'écrire dans le fichier.\n");
+        return;
+    }
+
+    fprintf(
+            fichier,
+            "%d|%s|%s|%s|%d\n",
+            membre->id_membre,
+            membre->nom,
+            membre->telephone,
+            membre->date_inscription
+        );
 }
