@@ -181,4 +181,13 @@ void radier_membre(Bibliotheque *bibliotheque, int id_membre);
  * @return void
  */
 int generer_id_livre(const Livre *livres, int nb_livres);
+
+/**
+ * @brief Fonction pour générer un identifiant unique pour un nouveau membre.
+ * Elle prend en paramètre un pointeur vers un tableau de structures Membre et le nombre de membres actuellement présents dans la bibliothèque, et retourne un entier représentant le prochain identifiant unique à attribuer à un nouveau membre, en s'assurant que cet identifiant n'est pas déjà utilisé par un membre existant dans la bibliothèque.
+ * @param membres Un pointeur vers un tableau de structures Membre représentant les membres actuellement présents dans la bibliothèque.
+ * @param nb_membres Le nombre de membres actuellement présents dans la bibliothèque.
+ * @return Un entier représentant le prochain identifiant unique à attribuer à un nouveau membre.
+ */
+int generer_id_membre(const Membre *membres, int nb_membres);
 #endif
