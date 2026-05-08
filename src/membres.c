@@ -54,7 +54,7 @@ void saisir_membre(Membre *membre, int prochain_id) {
 
 void afficher_membre(const Membre *membre) {
     if (membre == NULL) {
-        fprintf(stderr, "[Erreur] Impossible d'afficher : pointeur membre NULL.\n");
+        fprintf(stderr, "[Erreur 💥] Impossible d'afficher : pointeur membre NULL.\n");
         return;
     }
 
@@ -88,6 +88,7 @@ void sauvegarder_membre (const Membre *membre, FILE *fichier) {
             membre->id_membre,
             membre->nom,
             membre->telephone,
-            membre->date_inscription
+            membre->date_inscription,
+            membre->nb_emprunts_actifs
         );
 }

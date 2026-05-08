@@ -71,8 +71,8 @@ void saisir_livre(Livre *livre, int prochain_id) {
     while (1) {
         printf("Entrer l'ISBN (%d chiffres) : ", (choix == 1) ? 10 : 13);
         
-        // On limite la lecture à 19 caractères pour éviter le dépassement du tableau isbn[20]
-        if (scanf("%19s", livre->isbn) != 1) {
+        // On limite la lecture à TAILLE_MAX_ISBN - 1 caractères pour éviter le dépassement du tableau
+        if (scanf("%13s", livre->isbn) != 1) { // TAILLE_MAX_ISBN (14) - 1 = 13
             fprintf(stderr, "Erreur de lecture de l'ISBN.\n");
             vider_buffer();
             continue;

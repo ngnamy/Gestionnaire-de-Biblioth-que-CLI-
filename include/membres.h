@@ -5,7 +5,7 @@
 
 #define MAX_NOM_MEMBRE 50
 #define MAX_TEL_MEMBRE 11
-#define TAILLE_DATE 12 // Changed from 11 to 12 to accommodate "YYYY-MM-DD\n\0"
+#define TAILLE_DATE 11 
 
 /**
  * @brief Structure représentant un membre de la bibliothèque.
@@ -16,7 +16,7 @@
  * @param date_inscription Un tableau de caractères de taille 11 représentant la date d'inscription du membre au format "YYYY-MM-DD", utilisé pour suivre la date à laquelle le membre s'est inscrit à la bibliothèque et gérer les informations liées à son compte.
  * @param nb_emprunts_actifs Un entier représentant le nombre d'emprunts actifs que le membre a actuellement, utilisé pour limiter le nombre d'emprunts qu'un membre peut avoir en même temps et gérer les règles d'emprunt dans la bibliothèque.
  */
-typedef struct {
+typedef struct Membre {
     int id_membre;
     char nom[MAX_NOM_MEMBRE];
     char telephone[MAX_TEL_MEMBRE];

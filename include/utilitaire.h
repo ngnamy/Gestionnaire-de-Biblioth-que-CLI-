@@ -1,3 +1,5 @@
+#include "livre.h"
+#include "bibliotheque.h"
 #ifndef UTILITAIRE_H
 #define UTILITAIRE_H
 
@@ -44,4 +46,44 @@ int isLeapYear(int year);
  */
 int valider_date (const char *date);
 
+/**
+ * @brief Fonction pour rechercher dichotement un livre dans le tableau de livre.
+ * @param livres Un pointeur vers la structure de livre.
+ * @param id L'identifient du livre à rechercher.
+ * @return Un entier representant l'index du livre dans le tableau ou -1 dans le cas où aucun livre n'a été trouvé.
+ */
+int recherche_dichotomique_livre (Livre *livres, int taille, int id);
+
+/**
+ * @brief Procédure qui permet de modifier l'ISBN d'un livre dans la bibliothèque.
+ * @param b Un pointeur vers la structure de la bibliothèque.
+ * @param index L'index du livre dans le tableau de livres de la bibliothèque dont l'ISBN doit être modifié.
+ */
+void modifier_isbn(Bibliotheque *b, int index);
+
+/**
+ * @brief Procédure qui permet de modifier le titre d'un livre dans la bibliothèque.
+ * @param b Un pointeur vers la structure de la bibliothèque.
+ * @param index L'index du livre dans le tableau de livres de la bibliothèque dont le titre doit être modifié.
+ */
+void modifier_titre (Bibliotheque *b, int index);
+
+/**
+ * @brief Procédure qui permet de modifier l'auteur d'un livre dans la bibliothèque.
+ * @param b Un pointeur vers la structure de la bibliothèque.
+ * @param index L'index du livre dans le tableau de livres de la bibliothèque dont l'auteur doit être modifié.
+ */
+void modifier_auteur (Bibliotheque *b, int index);
+
+/**
+ * @brief Procédure qui permet de modifier l'année de publication d'un livre dans la bibliothèque.
+ * @param b Un pointeur vers la structure de la bibliothèque.
+ * @param index L'index du livre dans le tableau de livres de la bibliothèque dont l'auteur doit être modifié.
+ */
+void modifier_annee_publication (Bibliotheque *b, int index);
+
+/**
+ * @brief Procédure permet d'afficher le menu de catalogue des livres
+ */
+void menu_catologue_livre ();
 #endif

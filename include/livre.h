@@ -20,7 +20,7 @@
  * @param id_emprunteur Un entier représentant l'identifiant du membre qui a emprunté le livre (ou -1 si le livre n'est pas emprunté), utilisé pour suivre quel membre a emprunté le livre et faciliter la gestion des emprunts et des retours dans la bibliothèque.
  * @param date_echeance Un tableau de caractères de taille 11 représentant la date d'échéance du retour du livre au format "YYYY-MM-DD", utilisé pour suivre la date limite de retour du livre et gérer les notifications liées aux retours dans la bibliothèque.
  */
-typedef struct {
+typedef struct Livre {
     int id;
     char isbn[TAILLE_MAX_ISBN];
     char titre[TAILLE_MAX_TITRE];
@@ -75,6 +75,7 @@ void sauvegarder_livre(const Livre *livre, FILE *fichier);
  * @brief Fonction pour vérifier si un ISBN est valide.
  * Elle prend en paramètre un pointeur vers une chaîne de caractères représentant un ISBN, et retourne 1 si l'ISBN est valide, 0 sinon.
  * @param isbn Un pointeur vers une chaîne de caractères représentant un ISBN.
+ * @param type Un entier représentant le type d'ISBN à valider (0 pour ISBN-10, 1 pour ISBN-13).
  * @return 1 si l'ISBN est valide, 0 sinon.
  */
 int est_isbn_valide(const char *isbn, int type);

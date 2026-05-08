@@ -107,3 +107,80 @@ int valider_date (const char *date){
     // Si toutes les vérifications passent
     return 1;
 }
+
+int recherche_dichotomique_livre(Livre *livres, int taille, int id) {
+    int debut = 0, fin = taille - 1;
+    
+    while (debut <= fin) {
+        int milieu = debut + (fin - debut) / 2;
+        
+        if (livres[milieu].id > id) {
+            fin = milieu - 1;
+        } else if (livres[milieu].id < id) {
+            debut = milieu + 1;
+        } else {
+            return milieu;  // trouvé
+        }
+    }
+    return -1;
+}
+
+void modifier_isbn(Bibliotheque *b, int index) {
+    int type;
+    do {
+        printf("1. ISBN-10\n2. ISBN-13\nVotre choix : ");
+        if (scanf("%d", &type) != 1 || (type != 1 && type != 2)) {
+            fprintf(stderr, "Choix invalide.\n");
+            vider_buffer();
+            continue;
+        }
+        vider_buffer();
+        break;
+    } while (1);
+    
+    char tmp_isbn[14];  // 13 + \0
+    int taille_attendue = (type == 1) ? 10 : 13;
+    while (1) {
+        printf("Entrer l'ISBN (%d chiffres) : ", taille_attendue);
+        if (scanf("%13s", tmp_isbn) != 1) {
+            fprintf(stderr, "Erreur de lecture.\n");
+            vider_buffer();
+            continue;
+        }
+        vider_buffer();
+        if (est_isbn_valide(tmp_isbn, taille_attendue)) {
+            strcpy(b->livres[index].isbn, tmp_isbn);
+            break;
+        }
+        fprintf(stderr, "ISBN invalide.\n");
+    }
+}
+
+void modifier_titre(Bibliotheque *b, int index) {
+    char nouveau_titre[TAILLE_MAX_TITRE];
+    printf("Nouveau titre : ");
+    fgets(nouveau_titre, TAILLE_MAX_TITRE, stdin);
+    nouveau_titre[strcspn(nouveau_titre, "\n")] = '\0'; // supprime le saut de ligne
+    strncpy(b->livres[index].titre, nouveau_titre, TAILLE_MAX_TITRE - 1);
+    b->livres[index].titre[TAILLE_MAX_TITRE - 1] = '\0';
+}
+
+void modifier_auteur (Bibliotheque *b, int index) {
+    char nouveau_auteur[TAILLE_MAX_AUTEUR];
+    printf("Nouvel auteur : ");
+    fgets(nouveau_auteur, TAILLE_MAX_AUTEUR, stdin);
+    nouveau_auteur[strcspn(nouveau_auteur, "\n")] = '\0'; // supprime le saut de ligne
+    strncpy(b->livres[index].auteur, nouveau_auteur, TAILLE_MAX_AUTEUR - 1);
+    b->livres[index].auteur[TAILLE_MAX_AUTEUR - 1] = '\0';
+}
+
+void modifier_annee_publication (Bibliotheque *b, int index) {
+    int nouvelle_annee;
+    printf("Nouvelle année de publication : ");
+    if (scanf("%d", &nouvelle_annee) != 1) {
+        fprintf(stderr, "Erreur : L'année doit être un entier.\n");
+        vider_buffer();
+        return;
+    }
+    b->livres[index].annee_publication = nouvelle_annee;
+}

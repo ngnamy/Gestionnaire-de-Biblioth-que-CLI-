@@ -1,6 +1,10 @@
 #ifndef BIBLIOTHEQUE_H
 #define BIBLIOTHEQUE_H
 
+// Déclarations anticipées pour résoudre les dépendances circulaires
+typedef struct Livre Livre;
+typedef struct Membre Membre;
+
 #include "livre.h"
 #include "membres.h"
 
@@ -28,6 +32,7 @@ typedef struct {
 
     Membre *membres;
     int nb_membres;
+    int prochain_id_membre; // Ajouté pour la génération d'ID de membre
     int capacite_membres;
     
     char fichier_livres[MAX_TAILLE_FICHIER];
@@ -155,6 +160,14 @@ void lister_livres_en_retard(const Bibliotheque *bibliotheque, const char *date_
  * @return void
  */
 void inscrire_membre(Bibliotheque *bibliotheque);
+
+/**
+ * @brief Fonction pour afficher les informations de tous les membres inscrits dans la bibliothèque.
+ * Elle prend en paramètre un pointeur vers une structure Bibliotheque et affiche les informations de chaque membre présent dans le tableau de membres de manière formatée, en utilisant la fonction afficher_membre pour afficher les détails de chaque membre.
+ * @param bibliotheque Un pointeur vers une structure Bibliotheque dont les membres seront affichés.
+ * @return void
+ */
+void afficher_membres(const Bibliotheque *bibliotheque);
 
 /**
  * @brief Fonction pour rechercher un membre dans la bibliothèque.
