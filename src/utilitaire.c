@@ -381,3 +381,42 @@ char *str_trim (char *str) {
 
     return str;
 }
+
+int est_bissextile(int annee) {
+    if ((annee % 4 == 0 && annee % 100 != 0) || (annee % 400 == 0)) {
+        return 1;
+    }
+    return 0;
+}
+
+int valider_date_inscription_membre(const char *date) {
+    // 1. Vérification du format de base (YYYY-MM-DD)
+    if (strlen(date) != 10) return 0;
+    if (date[4] != '-' || date[7] != '-') return 0;
+
+    for (int i = 0; i < 10; i++) {
+        if (i == 4 || i == 7) continue;
+        if (!isdigit(date[i])) return 0;
+    }
+
+    // 2. Extraction des valeurs
+    int a, m, j;
+    sscanf(date, "%d-%d-%d", &a, &m, &j);
+
+    // 3. Validation des plages
+    if (a < 2000 || a > 2026) return 0; // Cohérence (on est en 2026)
+    if (m < 1 || m > 12) return 0;
+    if (j < 1 || j > 31) return 0;
+
+    // 4. Validation spécifique des mois
+    int jours_par_mois[] = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+    
+    // Ajustement pour février (année bissextile)
+    if (est_bissextile(a)) jours_par_mois[2] = 29;
+
+    if (j > jours_par_mois[m]) {
+        return 0; // Ex: 31 juin n'existe pas
+    }
+
+    return 1;
+}

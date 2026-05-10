@@ -54,9 +54,9 @@ void saisir_membre(Membre *membre, int prochain_id) {
             }
             membre->date_inscription[strcspn(membre->date_inscription, "\n")] = '\0';
 
-            if (valider_date(membre->date_inscription)) break;
+            if (valider_date_inscription_membre(membre->date_inscription)) break;
 
-            fprintf(stderr, "[Erreur] Format YYYY-MM-DD obligatoire.\n");
+            fprintf(stderr, "[Erreur] Format YYYY-MM-DD obligatoire et la date doit être cohérente (L'année doit être comprise entre 2000 et %d).\n", annee_actuelle());
         }
     }
 

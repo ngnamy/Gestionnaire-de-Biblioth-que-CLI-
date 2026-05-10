@@ -133,4 +133,18 @@ int rechercher_livre_par_auteur(const Bibliotheque *biblio, int taille, const ch
  */
 char *str_trim (char *str);
 
+/**
+ * @brief Fonction qui permet de vérifier si une année est bissextile ou pas
+ * @param annee Un entier représentant l'année à vérifier.
+ * @return int Un entier 1 si l'année est bissextile 0 si elle ne l'est pas.
+ */
+int est_bissextile(int annee);
+
+/**
+ * @brief Cette fonction permet de valider une date d'inscription de membre.
+ * @param date La date à vérifier.
+ * @return int Un entier 1 si l'année est bissextile 0 si elle ne l'est pas. 
+ */
+int valider_date_inscription_membre(const char *date);
+
 #endif
