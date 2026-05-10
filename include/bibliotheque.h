@@ -78,7 +78,7 @@ void afficher_bibliotheque(const Bibliotheque *bibliotheque);
  * @brief Fonction pour rechercher un livre dans la bibliothèque par son identifiant.
  * Elle prend en paramètre un pointeur vers une structure Bibliotheque et un entier représentant l'identifiant du livre à rechercher, parcourt le tableau de livres de la bibliothèque pour trouver un livre dont l'identifiant correspond à celui recherché, et retourne l'index du livre trouvé dans le tableau de livres ou -1 si aucun livre avec l'identifiant spécifié n'est trouvé.
  * @param bibliotheque Un pointeur vers une structure Bibliotheque dans laquelle le livre sera recherché.
- * @param id L'identifiant du livre à rechercher dans la bibliothèque.
+ * @param id L'identifiant du livre à rechercher.
  * @return L'index du livre trouvé dans le tableau de livres ou -1 si aucun livre avec l'identifiant spécifié n'est trouvé.
  */
 int rechercher_livre(const Bibliotheque *bibliotheque, int id);

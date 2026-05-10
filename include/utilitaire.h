@@ -86,17 +86,44 @@ void modifier_annee_publication (Bibliotheque *b, int index);
  * @brief Procédure permet d'afficher le menu de catalogue des livres
  * @param biblio .
  */
-void menu_catologue_livre (Bibliotheque biblio);
+void menu_catologue_livre (Bibliotheque *biblio);
 
 /**
  * @brief Procédure permet d'afficher le menu de catalogue des livres
  * 
  */
-void menu_gestion_membres (Bibliotheque biblio);
+void menu_gestion_membres (Bibliotheque *biblio);
 
 /**
  * @brief Procédure permet d'afficher le menu emprunt et retour de livre
- * 
  */
-void menu_gestion_emprunt_retour (Bibliotheque biblio);
+void menu_gestion_emprunt_retour (Bibliotheque *biblio);
+
+/**
+ * @brief Fonction permetant de rechercher un livre dans la bibliothèque par son identifient. 
+ * @param biblio Un pointeur vers la structure de la bibliothèque.
+ * @param id Un entier représentant l'identifient du livre à rechercher.
+ * @param taille Un entier représentant la taille du tableau de livre.
+ * @return int Un entier representant l'index du livre dans le tableau ou -1 dans le cas où aucun livre n'a été trouvé.
+ */
+int rechercher_livre_par_id (const Bibliotheque *biblio, int taille, int id);
+
+/**
+ * @brief Fonction permet de rechercher un livre dans le tableau de livres en utilisant son titre.
+ * @param b Un pointeur vers la structure de la bibliothèque.
+ * @param titre Le titre du livre à rechercher.
+ * @param taille Un entier représentant la taille du tableau de livre.
+ * @return int Un entier representant l'index du livre dans le tableau ou -1 dans le cas où aucun livre n'a été trouvé.
+ */
+int rechercher_livre_par_titre(const Bibliotheque *biblio, int taille, const char *titre);
+
+/**
+ * @brief Fonction permet de rechercher un livre dans le tableau de livres en utilisant son auteur.
+ * @param b Un pointeur vers la structure de la bibliothèque.
+ * @param auteur L'auteur du livre à rechercher.
+ * @param taille Un entier représentant la taille du tableau de livre.
+ * @return int Un entier representant l'index du livre dans le tableau ou -1 dans le cas où aucun livre n'a été trouvé.
+ */
+int rechercher_livre_par_auteur(const Bibliotheque *biblio, int taille, const char *auteur);
+
 #endif

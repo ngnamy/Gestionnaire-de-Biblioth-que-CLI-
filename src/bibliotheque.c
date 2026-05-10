@@ -72,16 +72,9 @@ void afficher_bibliotheque(const Bibliotheque *bibliotheque){
 
 int rechercher_livre(const Bibliotheque *bibliotheque, int id) {
     if (bibliotheque == NULL || bibliotheque->livres == NULL) {
-        fprintf(stderr, "La bibliothèque ou le tableau de livre n'a pas été initialisé.");
         return -1;
     }
-    Livre *livres = bibliotheque->livres;
-    int nb_livres = bibliotheque->nb_livres;
-
-    int resultat = recherche_dichotomique_livre (livres, nb_livres, id);
-    if (resultat >= 0) return resultat;
-
-    return -1;
+    return rechercher_livre_par_id(bibliotheque, bibliotheque->nb_livres, id);
 }
 
 void modifier_livre(Bibliotheque *bibliotheque, int id) {

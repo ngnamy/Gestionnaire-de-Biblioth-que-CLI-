@@ -39,17 +39,20 @@ int main () {
         {
         case 1: // Gestion du catalogue
             {
-                menu_catologue_livre(biblio);
+                menu_catologue_livre(&biblio);
+                sauvegarder_bibliotheque(&biblio);
             }
             break;
         case 2: // Gérer les membres
             {
-                menu_gestion_membres(biblio);
+                menu_gestion_membres(&biblio);
+                sauvegarder_bibliotheque(&biblio);
             }
             break;
         case 3: // Gérer les emprunts
             {
-                menu_gestion_emprunt_retour(biblio);
+                menu_gestion_emprunt_retour(&biblio);
+                sauvegarder_bibliotheque(&biblio);
             }
             break;
         case 4: // Quitter

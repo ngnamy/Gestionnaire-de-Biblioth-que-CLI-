@@ -185,41 +185,69 @@ void modifier_annee_publication (Bibliotheque *b, int index) {
     b->livres[index].annee_publication = nouvelle_annee;
 }
 
-void menu_catologue_livre (Bibliotheque biblio) {
+void menu_catologue_livre (Bibliotheque *biblio) {
     int choix_cat = 0;
     do {
         printf("\n--- GESTION DU CATALOGUE ---\n");
-        printf("1. Afficher tous les livres\n2. Ajouter un livre\n3. Rechercher un livre (ID)\n");
+        printf("1. Afficher tous les livres\n2. Ajouter un livre\n3. Rechercher un livre \n");
         printf("4. Modifier un livre\n5. Supprimer un livre\n6. Trier par titre\n7. Retour\n");
         printf("Choix : ");
         scanf("%d", &choix_cat); vider_buffer();
         switch(choix_cat) {
-            case 1: afficher_bibliotheque(&biblio); break;
+            case 1: afficher_bibliotheque(biblio); break;
             case 2: {
-                Livre n; saisir_livre(&n, biblio.prochain_id_livre++);
-                ajouter_livre(&biblio, n); break;
+                Livre n; saisir_livre(&n, biblio->prochain_id_livre++);
+                ajouter_livre(biblio, n); break;
             }
             case 3: {
-                int id; printf("ID à rechercher : "); scanf("%d", &id); vider_buffer();
-                int idx = rechercher_livre(&biblio, id);
-                if(idx != -1) afficher_livre(&biblio.livres[idx]);
+                int choix_rech;
+                printf("\n--- Rechercher par ---\n");
+                printf("1. ID\n2. Auteur\n3. Titre\nChoix : ");
+                if (scanf("%d", &choix_rech) != 1) {
+                    vider_buffer();
+                    printf("Choix invalide.\n");
+                    break;
+                }
+                vider_buffer();
+
+                int idx = -1;
+                if (choix_rech == 1) {
+                    int id;
+                    printf("ID à rechercher : ");
+                    if (scanf("%d", &id) == 1) idx = rechercher_livre_par_id(biblio, biblio->nb_livres, id);
+                    vider_buffer();
+                } else if (choix_rech == 2) {
+                    char auteur[TAILLE_MAX_AUTEUR];
+                    printf("Nom de l'auteur : ");
+                    fgets(auteur, TAILLE_MAX_AUTEUR, stdin);
+                    auteur[strcspn(auteur, "\n")] = 0;
+                    idx = rechercher_livre_par_auteur(biblio, biblio->nb_livres, auteur);
+                } else if (choix_rech == 3) {
+                    char titre[TAILLE_MAX_TITRE];
+                    printf("Titre du livre : ");
+                    fgets(titre, TAILLE_MAX_TITRE, stdin);
+                    titre[strcspn(titre, "\n")] = 0;
+                    idx = rechercher_livre_par_titre(biblio, biblio->nb_livres, titre);
+                }
+
+                if(idx != -1) afficher_livre(&biblio->livres[idx]);
                 else printf("Livre introuvable.\n");
                 break;
             }
             case 4: {
                 int id; printf("ID à modifier : "); scanf("%d", &id); vider_buffer();
-                modifier_livre(&biblio, id); break;
+                modifier_livre(biblio, id); break;
             }
             case 5: {
                 int id; printf("ID à supprimer : "); scanf("%d", &id); vider_buffer();
-                supprimer_livre(&biblio, id); break;
+                supprimer_livre(biblio, id); break;
             }
-            case 6: trier_bibliotheque(&biblio); break;
+            case 6: trier_bibliotheque(biblio); break;
         }
     } while (choix_cat != 7);
 }
 
-void menu_gestion_membres (Bibliotheque biblio) {
+void menu_gestion_membres (Bibliotheque *biblio) {
     int choix_membre = 0;
     do {
         printf("\n=== GESTION DES MEMBRES ===\n");
@@ -238,17 +266,17 @@ void menu_gestion_membres (Bibliotheque biblio) {
 
         switch (choix_membre) {
             case 1:
-                afficher_membres(&biblio);
+                afficher_membres(biblio);
                 break;
             case 2:
-                inscrire_membre(&biblio);
+                inscrire_membre(biblio);
                 break;
             case 3:
                 {
                     int id_a_radier;
                     printf("Entrez l'ID du membre à radier : ");
                     if (scanf("%d", &id_a_radier) == 1) {
-                        radier_membre(&biblio, id_a_radier);
+                        radier_membre(biblio, id_a_radier);
                     } else {
                         fprintf(stderr, "ID invalide.\n");
                     }
@@ -261,7 +289,7 @@ void menu_gestion_membres (Bibliotheque biblio) {
     } while (choix_membre != 4);
 }
 
-void menu_gestion_emprunt_retour (Bibliotheque biblio) {
+void menu_gestion_emprunt_retour (Bibliotheque *biblio) {
     int choix_emprunt = 0;
     do {
         printf("\n=== GESTION DES EMPRUNTS ===\n");
@@ -277,17 +305,59 @@ void menu_gestion_emprunt_retour (Bibliotheque biblio) {
             int id_l, id_m;
             printf("ID du livre : "); scanf("%d", &id_l);
             printf("ID du membre : "); scanf("%d", &id_m);
-            effectuer_emprunt(&biblio, id_l, id_m);
+            effectuer_emprunt(biblio, id_l, id_m);
         } else if (choix_emprunt == 2) {
             int id_l;
             printf("ID du livre à retourner : "); scanf("%d", &id_l);
-            effectuer_retour(&biblio, id_l);
+            effectuer_retour(biblio, id_l);
         } else if (choix_emprunt == 3) {
             // On génère une date fictive ou réelle pour le test
             char aujourdhui[11];
             time_t t = time(NULL);
             strftime(aujourdhui, 11, "%Y-%m-%d", localtime(&t));
-            lister_livres_en_retard(&biblio, aujourdhui);
+            lister_livres_en_retard(biblio, aujourdhui);
         }
     } while (choix_emprunt != 4);
+}
+
+
+int rechercher_livre_par_id (const Bibliotheque *biblio, int taille, int id) {
+    if (biblio == NULL || biblio->livres == NULL) {
+        fprintf(stderr, "Impossible de faire la recherche avec une bibliothèque ou des livres non initialisés\n");
+        return -1;
+    }
+    Livre *livres = biblio->livres;
+
+    for (int i = 0; i < taille; i++) {
+        if (livres[i].id == id) return i;
+    }
+    return -1;
+}
+
+int rechercher_livre_par_auteur(const Bibliotheque *biblio, int taille, const char *auteur) {
+    if (biblio == NULL || biblio->livres == NULL) {
+        fprintf(stderr, "Erreur : bibliothèque non initialisée\n");
+        return -1;
+    }
+    Livre *livres = biblio->livres;
+
+    for (int i = 0; i < taille; i++) {
+        if (strcmp(livres[i].auteur, auteur) == 0)
+            return i;   // retourne le premier livre trouvé
+    }
+    return -1;
+}
+
+int rechercher_livre_par_titre(const Bibliotheque *biblio, int taille, const char *titre) {
+    if (biblio == NULL || biblio->livres == NULL) {
+        fprintf(stderr, "Erreur : bibliothèque non initialisée\n");
+        return -1;
+    }
+    Livre *livres = biblio->livres;
+
+    for (int i = 0; i < taille; i++) {
+        if (strcmp(livres[i].titre, titre) == 0)
+            return i;
+    }
+    return -1;
 }
