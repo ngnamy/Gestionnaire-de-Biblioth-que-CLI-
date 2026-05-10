@@ -182,6 +182,7 @@ void modifier_annee_publication (Bibliotheque *b, int index) {
         vider_buffer();
         return;
     }
+    vider_buffer();  // Consomme le '\n' laissé par scanf
     b->livres[index].annee_publication = nouvelle_annee;
 }
 
@@ -254,7 +255,8 @@ void menu_gestion_membres (Bibliotheque *biblio) {
         printf("1. Afficher tous les membres\n");
         printf("2. Inscrire un nouveau membre\n");
         printf("3. Radier un membre\n");
-        printf("4. Retour au menu principal\n");
+        printf("4. Modifier membre\n");
+        printf("5. Retour au menu principal\n");
         printf("Votre choix : ");
 
         if (scanf("%d", &choix_membre) != 1) {
@@ -283,10 +285,22 @@ void menu_gestion_membres (Bibliotheque *biblio) {
                     vider_buffer();
                 }
                 break;
-            case 4: break; // Retour au menu principal
+            case 4:
+                int id_membre;
+                printf("Entrez l'ID du membre à modifier : ");
+
+                if (scanf("%d", &id_membre) == 1) {
+                    vider_buffer();
+                    modifier_membre(biblio, id_membre);
+                } else {
+                    fprintf(stderr, "ID invalide.\n");
+                    vider_buffer();
+                }
+                break;  // ← break manquant : empêchait le fall-through vers case 5
+            case 5: break; // Retour au menu principal
             default: fprintf(stderr, "Option invalide. Veuillez choisir entre 1 et 4.\n"); break;
         }
-    } while (choix_membre != 4);
+    } while (choix_membre != 5);
 }
 
 void menu_gestion_emprunt_retour (Bibliotheque *biblio) {
@@ -303,12 +317,17 @@ void menu_gestion_emprunt_retour (Bibliotheque *biblio) {
 
         if (choix_emprunt == 1) {
             int id_l, id_m;
-            printf("ID du livre : "); scanf("%d", &id_l);
-            printf("ID du membre : "); scanf("%d", &id_m);
+            printf("ID du livre : ");
+            if (scanf("%d", &id_l) != 1) { vider_buffer(); continue; }
+            printf("ID du membre : ");
+            if (scanf("%d", &id_m) != 1) { vider_buffer(); continue; }
+            vider_buffer();
             effectuer_emprunt(biblio, id_l, id_m);
         } else if (choix_emprunt == 2) {
             int id_l;
-            printf("ID du livre à retourner : "); scanf("%d", &id_l);
+            printf("ID du livre à retourner : ");
+            if (scanf("%d", &id_l) != 1) { vider_buffer(); continue; }
+            vider_buffer();
             effectuer_retour(biblio, id_l);
         } else if (choix_emprunt == 3) {
             // On génère une date fictive ou réelle pour le test

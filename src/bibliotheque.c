@@ -328,3 +328,129 @@ int generer_id_livre(const Livre *livres, int nb_livres) {
 int generer_id_membre(const Membre *membres, int nb_membres) {
     return (nb_membres == 0) ? 1 : membres[nb_membres - 1].id_membre + 1;
 }
+
+void modifier_nom (Bibliotheque *bibliotheque, int index) {
+    printf("1. Confirmer la modification\n2. Annuler\n");
+
+    int choix;
+    do {
+        printf("Votre choix : ");
+        if (scanf("%d", &choix) != 1) {
+            fprintf(stderr, "Choix invalide : Le choix doit être un entier (1 ou 2)\n");
+            vider_buffer();
+            choix = 0;  // Forcer une nouvelle itération
+            continue;
+        }
+        vider_buffer();  // Consomme le '\n' laissé par scanf
+
+        switch (choix) {
+        case 1: {
+            printf("Entrez le nouveau nom : ");
+
+            char nouveau_nom[MAX_NOM_MEMBRE];
+            if (fgets(nouveau_nom, MAX_NOM_MEMBRE, stdin) == NULL) {
+                fprintf(stderr, "Erreur : Nom invalide.\n");
+                choix = 0;  // Rester dans la boucle
+                break;
+            }
+            // Supprimer le '\n' — pas besoin de vider_buffer() après fgets
+            nouveau_nom[strcspn(nouveau_nom, "\n")] = '\0';
+
+            if (strlen(str_trim(nouveau_nom)) > 0) {
+                strncpy(bibliotheque->membres[index].nom, nouveau_nom, MAX_NOM_MEMBRE - 1);
+                bibliotheque->membres[index].nom[MAX_NOM_MEMBRE - 1] = '\0';
+                printf("Réussie : Nom modifié avec succès.\n");
+                choix = 2;  // Quitter la boucle proprement
+            } else {
+                fprintf(stderr, "Erreur : Le nom ne peut pas être vide.\n");
+                choix = 0;  // Rester dans la boucle
+            }
+            break;
+        }
+        case 2:
+            printf("Modification annulée.\n");
+            break;
+        default:
+            fprintf(stderr, "Choix invalide : veuillez recommencer.\n");
+            choix = 0;
+        }
+    } while (choix != 2);
+}
+
+void modifier_telephone (Bibliotheque *bibliotheque, int index) {
+    char tmp_tel[MAX_TEL_MEMBRE];
+    while (1) {
+        printf("Entrez le nouveau numéro de téléphone (9 chiffres, commençant par 6 ou 2) : ");
+        if (fgets(tmp_tel, MAX_TEL_MEMBRE, stdin) == NULL) {
+            fprintf(stderr, "Erreur de lecture.\n");
+            continue;
+        }
+        tmp_tel[strcspn(tmp_tel, "\n")] = '\0';
+
+        if (valider_numero(tmp_tel)) {
+            strncpy(bibliotheque->membres[index].telephone, tmp_tel, MAX_TEL_MEMBRE - 1);
+            bibliotheque->membres[index].telephone[MAX_TEL_MEMBRE - 1] = '\0';
+            printf("Téléphone modifié avec succès.\n");
+            break;
+        }
+        fprintf(stderr, "[Erreur] Numéro invalide. Réessayez.\n");
+    }
+}
+
+void modifier_date_inscription (Bibliotheque *bibliotheque, int index) {
+    char tmp_date[TAILLE_DATE];
+    while (1) {
+        printf("Entrez la nouvelle date d'inscription (YYYY-MM-DD) : ");
+        if (fgets(tmp_date, TAILLE_DATE, stdin) == NULL) {
+            fprintf(stderr, "Erreur de lecture.\n");
+            continue;
+        }
+        tmp_date[strcspn(tmp_date, "\n")] = '\0';
+
+        if (valider_date_inscription_membre(tmp_date)) {
+            strncpy(bibliotheque->membres[index].date_inscription, tmp_date, TAILLE_DATE - 1);
+            bibliotheque->membres[index].date_inscription[TAILLE_DATE - 1] = '\0';
+            printf("Date d'inscription modifiée avec succès.\n");
+            break;
+        }
+        fprintf(stderr, "[Erreur] Format YYYY-MM-DD obligatoire et année entre 2000 et %d.\n", annee_actuelle());
+    }
+}
+
+void modifier_membre (Bibliotheque *bibliotheque, int id_membre) {
+    int index = rechercher_membre(bibliotheque, id_membre);
+    if (index == -1) {
+        printf("Membre non trouvé.\n");
+        return;
+    }
+    
+    int choix;
+    do {
+        
+        printf("Que voulez-vous modifier ?\n");
+        printf("1. Nom\n");
+        printf("2. Téléphone\n");
+        printf("3. Date d'inscription\n");
+        printf("4. Quitter\n");
+        printf("Entrez votre choix : ");
+        scanf("%d", &choix);
+        vider_buffer();
+        
+        switch (choix) {
+            case 1:
+                modifier_nom(bibliotheque, index);
+                break;
+            case 2:
+                modifier_telephone(bibliotheque, index);
+                break;
+            case 3:
+                modifier_date_inscription(bibliotheque, index);
+                break;
+            case 4:
+                break;
+            default:
+                printf("Choix invalide : veillez recommencer.\n");
+        }
+    } while (choix != 4);
+    
+}

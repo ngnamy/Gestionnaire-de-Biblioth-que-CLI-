@@ -203,4 +203,37 @@ int generer_id_livre(const Livre *livres, int nb_livres);
  * @return Un entier représentant le prochain identifiant unique à attribuer à un nouveau membre.
  */
 int generer_id_membre(const Membre *membres, int nb_membres);
+
+/**
+ * @brief Procédure permetant de modifier les informations d'un membre.
+ * @param bibliotheque Un pointeur vers une structure Bibliotheque.
+ * @param id_membre L'identifiant du membre à modifier.
+ * @return void
+ */
+void modifier_membre (Bibliotheque *bibliotheque, int id_membre);
+
+/**
+ * @brief Fonction permetant de modifier le nom d'un membre.
+ * @param bibliotheque Un pointeur vers une structure Bibliotheque.
+ * @param index L'index du membre dans le tableau de membres de la bibliothèque.
+ * @return void
+ */
+void modifier_nom (Bibliotheque *bibliotheque, int index);
+
+/**
+ * @brief Fonction permetant de modifier le numéro de téléphone d'un membre.
+ * @param bibliotheque Un pointeur vers une structure Bibliotheque.
+ * @param index L'index du membre dans le tableau de membres de la bibliothèque.
+ * @return void
+ */
+void modifier_telephone (Bibliotheque *bibliotheque, int index);
+
+/**
+ * @brief Fonction permetant de modifier la date d'inscription d'un membre.
+ * @param bibliotheque Un pointeur vers une structure Bibliotheque.
+ * @param index L'index du membre dans le tableau de membres de la bibliothèque.
+ * @return void
+ */
+void modifier_date_inscription (Bibliotheque *bibliotheque, int index);
+
 #endif
