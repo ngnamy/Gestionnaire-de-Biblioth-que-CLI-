@@ -154,7 +154,6 @@ void afficher_membres(const Bibliotheque *bibliotheque) {
     }
 }
 
-
 void supprimer_livre(Bibliotheque *bibliotheque, int id) {
     int index = rechercher_livre(bibliotheque, id);
     if (index == -1) {

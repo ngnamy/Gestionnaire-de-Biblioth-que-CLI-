@@ -361,3 +361,23 @@ int rechercher_livre_par_titre(const Bibliotheque *biblio, int taille, const cha
     }
     return -1;
 }
+
+char *str_trim (char *str) {
+    char *end;
+
+    // Supprimer au début
+    while(isspace((unsigned char)*str)) str++;
+
+    // La chaine n' a que des caractères vides.
+    if(*str == 0)
+        return str;
+
+    // Supprimer à la fin.
+    end = str + strlen(str) - 1;
+    while(end > str && isspace((unsigned char)*end)) end--;
+
+    // Mettre le caractère de fin de chaine à la fin.
+    *(end+1) = 0;
+
+    return str;
+}

@@ -126,4 +126,11 @@ int rechercher_livre_par_titre(const Bibliotheque *biblio, int taille, const cha
  */
 int rechercher_livre_par_auteur(const Bibliotheque *biblio, int taille, const char *auteur);
 
+/**
+ * @brief Fonction qui permet de supprimer des caractères vides en début et fin de chaine.
+ * @param str Un pointeur vers la chaine de caractère.
+ * @return Un pointeur vers la chaine de caractère après suppression des caractères vides en début et fin de chaine.
+ */
+char *str_trim (char *str);
+
 #endif

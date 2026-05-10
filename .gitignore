@@ -9,5 +9,5 @@ library_manager    # Le nom de ton binaire final
 
 # Dossiers de build (si tu utilises CMake plus tard)
 build/
-.vscode/           # Si tu utilises VS Code
-.idea/             # SI tu utilise CLion
+*.vscode/           # Si tu utilises VS Code
+*.idea/             # SI tu utilise CLion

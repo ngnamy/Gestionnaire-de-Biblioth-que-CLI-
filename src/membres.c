@@ -10,13 +10,25 @@ void saisir_membre(Membre *membre, int prochain_id) {
     membre->id_membre = prochain_id;
 
     // --- 1. Nom ---
-    printf("Entrer votre nom : ");
-    if (fgets(membre->nom, MAX_NOM_MEMBRE, stdin) != NULL) {
-        if (membre->nom[strlen(membre->nom) - 1] != '\n') {
+    char nom[MAX_NOM_MEMBRE];
+    do {
+        printf("Entrer votre nom : ");
+        if (fgets(nom, MAX_NOM_MEMBRE, stdin) != NULL) {
+            if (nom[strlen(nom) - 1] != '\n') {
+                vider_buffer();
+            }
+            nom[strcspn(nom, "\n")] = '\0';
+        } else {
+            fprintf(stderr, "Le nom ne dois pas être vide : veillez réessayer");
             vider_buffer();
         }
-        membre->nom[strcspn(membre->nom, "\n")] = '\0';
-    }
+        if (strlen(str_trim(nom)) > 0) {
+            strncpy(membre->nom, nom, sizeof(membre->nom) - 1);
+            membre->nom[sizeof(membre->nom) - 1] = '\0';
+            break;
+        }
+    } while (1);
+
 
     // --- 2. Numéro de téléphone (avec boucle de validation) ---
     while (1) {
