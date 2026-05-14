@@ -360,8 +360,15 @@ int rechercher_livre_par_auteur(const Bibliotheque *biblio, int taille, const ch
     Livre *livres = biblio->livres;
 
     for (int i = 0; i < taille; i++) {
-        if (strcmp(livres[i].auteur, auteur) == 0)
+        char *auteur_toLower = str_toLower(livres[i].auteur, strlen(livres[i].auteur));
+        char *auteur_lower = str_toLower(auteur, strlen(auteur));
+        if (strcmp(auteur_toLower, auteur_lower) == 0) {
+            free(auteur_toLower);
+            free(auteur_lower);
             return i;   // retourne le premier livre trouvé
+        }
+        free(auteur_toLower);
+        free(auteur_lower);
     }
     return -1;
 }
@@ -374,8 +381,13 @@ int rechercher_livre_par_titre(const Bibliotheque *biblio, int taille, const cha
     Livre *livres = biblio->livres;
 
     for (int i = 0; i < taille; i++) {
-        if (strcmp(livres[i].titre, titre) == 0)
+        char *titre_toLower = str_toLower(livres[i].titre, strlen(livres[i].titre));
+        char *titre_lower = str_toLower(titre, strlen(titre));
+        if (strcmp(titre_toLower, titre_lower) == 0) {
+            free(titre_toLower);
+            free(titre_lower);
             return i;
+        }
     }
     return -1;
 }
