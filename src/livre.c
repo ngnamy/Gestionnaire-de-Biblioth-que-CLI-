@@ -88,6 +88,7 @@ void saisir_livre(Livre *livre, int prochain_id) {
 
     // --- 3. Titre du livre (utilisation de fgets pour les espaces) ---
     printf("Entrer le titre du livre : ");
+    
     if (fgets(livre->titre, TAILLE_MAX_TITRE, stdin) != NULL) {
         livre->titre[strcspn(livre->titre, "\n")] = '\0';
     }

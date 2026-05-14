@@ -339,7 +339,6 @@ void menu_gestion_emprunt_retour (Bibliotheque *biblio) {
     } while (choix_emprunt != 4);
 }
 
-
 int rechercher_livre_par_id (const Bibliotheque *biblio, int taille, int id) {
     if (biblio == NULL || biblio->livres == NULL) {
         fprintf(stderr, "Impossible de faire la recherche avec une bibliothèque ou des livres non initialisés\n");
@@ -438,4 +437,18 @@ int valider_date_inscription_membre(const char *date) {
     }
 
     return 1;
+}
+
+char *str_toLower(const char *str, int str_len) {
+    char *lower_str = malloc(str_len + 1);
+    if (lower_str == NULL) {
+        fprintf(stderr, "Erreur d'allocation mémoire.\n");
+        vider_buffer();
+        return NULL;
+    }
+    for (int i = 0; str[i] != '\0'; i++) {
+        lower_str[i] = tolower((unsigned char)str[i]);
+    }
+    lower_str[str_len] = '\0';
+    return lower_str;
 }

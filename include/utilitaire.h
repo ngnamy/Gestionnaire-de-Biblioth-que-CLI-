@@ -147,4 +147,12 @@ int est_bissextile(int annee);
  */
 int valider_date_inscription_membre(const char *date);
 
+/**
+ * @brief Fonction qui convertit une chaîne de caractères en minuscules.
+ * @param str La chaîne de caractères à convertir.
+ * @param str_len La longueur de la chaîne de caractères.
+ * @return Un pointeur vers la nouvelle chaîne de caractères convertie en minuscules.
+ */
+char *str_toLower(const char *str, int str_len);
+
 #endif
