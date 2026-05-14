@@ -203,7 +203,7 @@ void menu_catologue_livre (Bibliotheque *biblio) {
             case 3: {
                 int choix_rech;
                 printf("\n--- Rechercher par ---\n");
-                printf("1. ID\n2. Auteur\n3. Titre\nChoix : ");
+                printf("1. ID\n2. Auteur\n3. Titre\n4. ISBN\n5. Annuler\nChoix : ");
                 if (scanf("%d", &choix_rech) != 1) {
                     vider_buffer();
                     printf("Choix invalide.\n");
@@ -229,6 +229,22 @@ void menu_catologue_livre (Bibliotheque *biblio) {
                     fgets(titre, TAILLE_MAX_TITRE, stdin);
                     titre[strcspn(titre, "\n")] = 0;
                     idx = rechercher_livre_par_titre(biblio, biblio->nb_livres, titre);
+                } else if (choix_rech == 4) {
+                    char isbn[14];
+                    printf("ISBN du livre : ");
+                    fgets(isbn, 14, stdin);
+                    isbn[strcspn(isbn, "\n")] = 0;
+                    if (!est_isbn_valide(isbn, 10) && !est_isbn_valide(isbn, 13)) {
+                        printf("ISBN invalide.\n");
+                        break;
+                    }
+                    idx = rechercher_livre_par_isbn(biblio, biblio->nb_livres, isbn);
+                } else if (choix_rech == 5) {
+                    printf("Recherche annulée.\n");
+                    break;
+                } else {
+                    printf("Option de recherche invalide.\n");
+                    break;
                 }
 
                 if(idx != -1) afficher_livre(&biblio->livres[idx]);
@@ -386,6 +402,21 @@ int rechercher_livre_par_titre(const Bibliotheque *biblio, int taille, const cha
         if (strcmp(titre_toLower, titre_lower) == 0) {
             free(titre_toLower);
             free(titre_lower);
+            return i;
+        }
+    }
+    return -1;
+}
+
+int rechercher_livre_par_isbn(const Bibliotheque *biblio, int taille, const char *isbn) {
+    if (biblio == NULL || biblio->livres == NULL) {
+        fprintf(stderr, "Erreur : bibliothèque non initialisée\n");
+        return -1;
+    }
+    Livre *livres = biblio->livres;
+
+    for (int i = 0; i < taille; i++) {
+        if (strcmp(livres[i].isbn, isbn) == 0) {
             return i;
         }
     }
