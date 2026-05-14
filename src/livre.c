@@ -87,16 +87,40 @@ void saisir_livre(Livre *livre, int prochain_id) {
     }
 
     // --- 3. Titre du livre (utilisation de fgets pour les espaces) ---
-    printf("Entrer le titre du livre : ");
-    
-    if (fgets(livre->titre, TAILLE_MAX_TITRE, stdin) != NULL) {
-        livre->titre[strcspn(livre->titre, "\n")] = '\0';
+    char titre[TAILLE_MAX_TITRE];
+    while (1) {
+        printf("Entrer le titre du livre : ");
+        if (fgets(titre, TAILLE_MAX_TITRE, stdin) != NULL) {
+            titre[strcspn(titre, "\n")] = '\0';
+            // Vérifier que le titre n'est pas vide
+            char *titre_trim = str_trim(titre);
+            if (strlen(titre_trim) > 0) {
+                strcpy(livre->titre, titre_trim);
+                break;
+            } else {
+                fprintf(stderr, "Erreur : Le titre ne peut pas être vide, réessayez.\n");
+            }
+        } else {
+            fprintf(stderr, "Erreur de lecture du titre : réessayez.\n");
+        }
     }
 
     // --- 4. Auteur du livre ---
     printf("Entrer l'auteur du livre : ");
-    if (fgets(livre->auteur, TAILLE_MAX_AUTEUR, stdin) != NULL) {
-        livre->auteur[strcspn(livre->auteur, "\n")] = '\0';
+    char auteur[TAILLE_MAX_AUTEUR];
+    while(1) {
+        if (fgets(auteur, TAILLE_MAX_AUTEUR, stdin) != NULL) {
+            auteur[strcspn(auteur, "\n")] = '\0';
+            char *auteur_trim = str_trim(auteur);
+            if (strlen(auteur_trim) > 0) {
+                strcpy(livre->auteur, auteur_trim);
+                break;
+            } else {
+                fprintf(stderr, "Erreur : L'auteur ne peut pas être vide, réessayez.\n");
+            }
+        } else {
+            fprintf(stderr, "Erreur de lecture de l'auteur : réessayez.\n");
+        }
     }
 
     // --- 5. Année de publication ---
