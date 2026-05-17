@@ -162,7 +162,7 @@ void modifier_titre(Bibliotheque *b, int index) {
     fgets(nouveau_titre, TAILLE_MAX_TITRE, stdin);
     nouveau_titre[strcspn(nouveau_titre, "\n")] = '\0'; // supprime le saut de ligne
     char *nouveau_titre_trim = str_trim(nouveau_titre);
-    if (str_trim(nouveau_titre_trim) <= 0) {
+    if (strlen(nouveau_titre_trim) <= 0) {
         fprintf(stderr, "Erreur : la chaine de caractère est vide.");
         return;
     }
@@ -182,6 +182,7 @@ void modifier_auteur (Bibliotheque *b, int index) {
     }
     strncpy(b->livres[index].auteur, nouveau_auteur, TAILLE_MAX_AUTEUR - 1);
     b->livres[index].auteur[TAILLE_MAX_AUTEUR - 1] = '\0';
+    printf("Réussie : Modification du nom de l'auteur effectuée.");
 }
 
 void modifier_annee_publication (Bibliotheque *b, int index) {
@@ -192,7 +193,7 @@ void modifier_annee_publication (Bibliotheque *b, int index) {
             vider_buffer(); // Toujours nettoyer le buffer après un scanf int
 
             if (nouvelle_annee >= 1450 && nouvelle_annee <= 2026) {
-                b->livres->annee_publication = nouvelle_annee;
+                b->livres[index].annee_publication = nouvelle_annee;
                 printf("[Succès] Année mise à jour.\n");
                 break;
             }

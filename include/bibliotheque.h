@@ -135,7 +135,7 @@ void supprimer_livre_par_titre(Bibliotheque *bibliotheque, const char *titre);
  * @param isbn L'ISBN du livre à supprimer de la bibliothèque.
  * @return void
  */
-void supprimer_livre_par_isbn(Bibliotheque *bibliotheque, const char *isbn);
+// void supprimer_livre_par_isbn(Bibliotheque *bibliotheque, const char *isbn);
 
 /**
  * @brief Fonction pour trier les livres de la bibliothèque par ordre alphabétique de leur titre.

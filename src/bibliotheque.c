@@ -197,14 +197,14 @@ void supprimer_livre_par_titre (Bibliotheque *bibliotheque, const char *titre) {
     supprimer_livre_par_index(bibliotheque, index);
 }
 
-void supprimer_titre_par_isbn (Bibliotheque *bibliotheque, const char *isbn) {
-    int index = rechercher_livre_par_isbn(bibliotheque, bibliotheque->nb_livres, isbn);
-    if (index == -1) {
-        printf("Aucun livre avec cet ISBN trouvé.\n");
-        return;
-    }
-    supprimer_livre_par_index(bibliotheque, index);
-}
+// void supprimer_titre_par_isbn (Bibliotheque *bibliotheque, const char *isbn) {
+//     int index = rechercher_livre_par_isbn(bibliotheque, bibliotheque->nb_livres, isbn);
+//     if (index == -1) {
+//         printf("Aucun livre avec cet ISBN trouvé.\n");
+//         return;
+//     }
+//     supprimer_livre_par_index(bibliotheque, index);
+// }
 
 void trier_bibliotheque(Bibliotheque *bibliotheque) {
     if (bibliotheque == NULL || bibliotheque->nb_livres < 2) return;
@@ -331,15 +331,15 @@ void charger_bibliotheque(Bibliotheque *bibliotheque) {
                        &m.id_membre, m.nom, m.telephone, m.date_inscription, &m.nb_emprunts_actifs) == 5) {
                 if (bibliotheque->nb_membres >= bibliotheque->capacite_membres) {
                     int nouvelle_capacite = bibliotheque->capacite_membres * 2;
-                    Membre *temp = realloc(bibliotheque->membre, nouvelle_capacite * sizeof[membre]);
+                    Membre *temp = realloc(bibliotheque->membres, nouvelle_capacite * sizeof(Membre));
                     if (temp == NULL) {
                         fprintf(stderr, "Erreur : Echec d'allocation mémoire au chargement de la bibliothèque.");
                         return;
                     }
-                    bibliotheque->membre = temp;
+                    bibliotheque->membres = temp;
                     bibliotheque->capacite_membres = nouvelle_capacite;
                 }
-                bibliotheque->membre[bibliotheque->nb_membres++] = m;
+                bibliotheque->membres[bibliotheque->nb_membres++] = m;
                 if (m.id_membre >= bibliotheque->prochain_id_membre) {
                     bibliotheque->prochain_id_membre = m.id_membre + 1;
                 }
