@@ -110,10 +110,10 @@ int valider_date (const char *date){
 
 int recherche_dichotomique_livre(Livre *livres, int taille, int id) {
     int debut = 0, fin = taille - 1;
-    
+
     while (debut <= fin) {
         int milieu = debut + (fin - debut) / 2;
-        
+
         if (livres[milieu].id > id) {
             fin = milieu - 1;
         } else if (livres[milieu].id < id) {
@@ -137,7 +137,7 @@ void modifier_isbn(Bibliotheque *b, int index) {
         vider_buffer();
         break;
     } while (1);
-    
+
     char tmp_isbn[14];  // 13 + \0
     int taille_attendue = (type == 1) ? 10 : 13;
     while (1) {
@@ -158,11 +158,41 @@ void modifier_isbn(Bibliotheque *b, int index) {
 
 void modifier_titre(Bibliotheque *b, int index) {
     char nouveau_titre[TAILLE_MAX_TITRE];
-    printf("Nouveau titre : ");
-    fgets(nouveau_titre, TAILLE_MAX_TITRE, stdin);
-    nouveau_titre[strcspn(nouveau_titre, "\n")] = '\0'; // supprime le saut de ligne
-    strncpy(b->livres[index].titre, nouveau_titre, TAILLE_MAX_TITRE - 1);
-    b->livres[index].titre[TAILLE_MAX_TITRE - 1] = '\0';
+    int choix;
+    do{
+        printf("1. Confirmer la modification\n2. Annuler\n");
+        if (scanf("%d", &choix) != 1) {
+            fprintf(stderr, "Erreur : Votre choix est invalide.");
+            vider_buffer();
+            choix = 0;
+            continue;
+        }
+        vider_buffer();
+
+        switch (choix)
+        {
+        case 1:
+            printf("Nouveau titre : ");
+            if (fgets(nouveau_titre, TAILLE_MAX_TITRE, stdin) == NULL) {
+                fprintf(stderr, "Erreur : Titre invalide.");
+                choix = 0;
+            }
+            vider_buffer();
+
+            nouveau_titre[strcspn(nouveau_titre, "\n")] = '\0'; // supprime le saut de ligne
+            if (strlen(str_trim(nouveau_titre)) <= 0) {
+                fprintf(stderr, "Erreur : Le titre ne dois pas être vide.");
+                choix = 0;
+            }
+            strncpy(b->livres[index].titre, nouveau_titre, TAILLE_MAX_TITRE - 1);
+            b->livres[index].titre[TAILLE_MAX_TITRE - 1] = '\0';
+            break;
+        case 2:
+            break;
+        default:
+            printf("Choix invalide : veillez recommencer.");
+        }
+    }while(choix != 2);
 }
 
 void modifier_auteur (Bibliotheque *b, int index) {
@@ -170,12 +200,19 @@ void modifier_auteur (Bibliotheque *b, int index) {
     printf("Nouvel auteur : ");
     fgets(nouveau_auteur, TAILLE_MAX_AUTEUR, stdin);
     nouveau_auteur[strcspn(nouveau_auteur, "\n")] = '\0'; // supprime le saut de ligne
-    strncpy(b->livres[index].auteur, nouveau_auteur, TAILLE_MAX_AUTEUR - 1);
-    b->livres[index].auteur[TAILLE_MAX_AUTEUR - 1] = '\0';
+
+    char *nouveau_auteur_trim = str_trim(nouveau_auteur);
+    if (strlen(nouveau_auteur_trim) > 0) {
+        strncpy(b->livres[index].auteur, nouveau_auteur_trim, TAILLE_MAX_AUTEUR - 1);
+        b->livres[index].auteur[TAILLE_MAX_AUTEUR - 1] = '\0';
+    } else {
+        fprintf(stderr, "Erreur : Impossible de traiter une chaine de caractère vide.");
+    }
 }
 
 void modifier_annee_publication (Bibliotheque *b, int index) {
     int nouvelle_annee;
+    int annee_ac = annee_actuelle();
     printf("Nouvelle année de publication : ");
     if (scanf("%d", &nouvelle_annee) != 1) {
         fprintf(stderr, "Erreur : L'année doit être un entier.\n");
@@ -183,10 +220,14 @@ void modifier_annee_publication (Bibliotheque *b, int index) {
         return;
     }
     vider_buffer();  // Consomme le '\n' laissé par scanf
-    b->livres[index].annee_publication = nouvelle_annee;
+    if (nouvelle_annee >= 1450 && nouvelle_annee <= annee_ac) {
+        b->livres[index].annee_publication = nouvelle_annee;
+    } else {
+        fprintf(stderr, "Erreur : L'année doit être comprise entre 1450 et %d.\n", annee_ac);
+    }
 }
 
-void menu_catologue_livre (Bibliotheque *biblio) {
+void menu_catalogue_livre (Bibliotheque *biblio) {
     int choix_cat = 0;
     do {
         printf("\n--- GESTION DU CATALOGUE ---\n");
@@ -286,8 +327,8 @@ void menu_gestion_membres (Bibliotheque *biblio) {
                 }
                 break;
             case 4:
-                int id_membre;
                 printf("Entrez l'ID du membre à modifier : ");
+                int id_membre;
 
                 if (scanf("%d", &id_membre) == 1) {
                     vider_buffer();
@@ -338,7 +379,6 @@ void menu_gestion_emprunt_retour (Bibliotheque *biblio) {
         }
     } while (choix_emprunt != 4);
 }
-
 
 int rechercher_livre_par_id (const Bibliotheque *biblio, int taille, int id) {
     if (biblio == NULL || biblio->livres == NULL) {
@@ -429,7 +469,7 @@ int valider_date_inscription_membre(const char *date) {
 
     // 4. Validation spécifique des mois
     int jours_par_mois[] = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-    
+
     // Ajustement pour février (année bissextile)
     if (est_bissextile(a)) jours_par_mois[2] = 29;
 

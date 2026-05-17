@@ -89,7 +89,7 @@ void modifier_livre(Bibliotheque *bibliotheque, int id) {
         printf("\n=== Que voulez-vous modifier ? ===\n");
         printf("1. L'ISBN\n2. Le titre\n3. L'auteur\n4. Année de publication\n5. Annuler\n");
         printf("Votre choix : ");
-        
+
         if (scanf("%d", &choix) != 1) {
             fprintf(stderr, "Saisie invalide.\n");
             vider_buffer();
@@ -291,10 +291,16 @@ void charger_bibliotheque(Bibliotheque *bibliotheque) {
             if (sscanf(ligne, "%d|%49[^|]|%10[^|]|%10[^|]|%d",
                        &m.id_membre, m.nom, m.telephone, m.date_inscription, &m.nb_emprunts_actifs) == 5) {
                 if (bibliotheque->nb_membres >= bibliotheque->capacite_membres) {
-                    bibliotheque->capacite_membres *= 2;
-                    bibliotheque->membres = realloc(bibliotheque->membres, bibliotheque->capacite_membres * sizeof(Membre));
+                    int nouvelle_capacite = bibliotheque->capacite_membres * 2;
+                    Membre *temp = realloc(bibliotheque->membre, nouvelle_capacite * sizeof[membre]);
+                    if (temp == NULL) {
+                        fprintf(stderr, "Erreur : Echec d'allocation mémoire au chargement de la bibliothèque.");
+                        return;
+                    }
+                    bibliotheque->membre = temp;
+                    bibliotheque->capacite_membres = nouvelle_capacite;
                 }
-                bibliotheque->membres[bibliotheque->nb_membres++] = m;
+                bibliotheque->membre[bibliotheque->nb_membres++] = m;
                 if (m.id_membre >= bibliotheque->prochain_id_membre) {
                     bibliotheque->prochain_id_membre = m.id_membre + 1;
                 }
@@ -423,10 +429,10 @@ void modifier_membre (Bibliotheque *bibliotheque, int id_membre) {
         printf("Membre non trouvé.\n");
         return;
     }
-    
+
     int choix;
     do {
-        
+
         printf("Que voulez-vous modifier ?\n");
         printf("1. Nom\n");
         printf("2. Téléphone\n");
@@ -435,7 +441,7 @@ void modifier_membre (Bibliotheque *bibliotheque, int id_membre) {
         printf("Entrez votre choix : ");
         scanf("%d", &choix);
         vider_buffer();
-        
+
         switch (choix) {
             case 1:
                 modifier_nom(bibliotheque, index);
@@ -452,5 +458,5 @@ void modifier_membre (Bibliotheque *bibliotheque, int id_membre) {
                 printf("Choix invalide : veillez recommencer.\n");
         }
     } while (choix != 4);
-    
+
 }

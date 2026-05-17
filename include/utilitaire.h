@@ -86,7 +86,7 @@ void modifier_annee_publication (Bibliotheque *b, int index);
  * @brief Procédure permet d'afficher le menu de catalogue des livres
  * @param biblio .
  */
-void menu_catologue_livre (Bibliotheque *biblio);
+void menu_catalogue_livre (Bibliotheque *biblio);
 
 /**
  * @brief Procédure permet d'afficher le menu de catalogue des livres

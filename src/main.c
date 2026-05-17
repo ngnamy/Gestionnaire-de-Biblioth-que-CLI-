@@ -39,7 +39,7 @@ int main () {
         {
         case 1: // Gestion du catalogue
             {
-                menu_catologue_livre(&biblio);
+                menu_catalogue_livre(&biblio);
                 sauvegarder_bibliotheque(&biblio);
             }
             break;
