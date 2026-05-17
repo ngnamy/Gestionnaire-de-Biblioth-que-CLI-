@@ -176,17 +176,24 @@ void modifier_auteur (Bibliotheque *b, int index) {
 
 void modifier_annee_publication (Bibliotheque *b, int index) {
     int nouvelle_annee;
-    printf("Nouvelle année de publication : ");
-    if (scanf("%d", &nouvelle_annee) != 1) {
-        fprintf(stderr, "Erreur : L'année doit être un entier.\n");
-        vider_buffer();
-        return;
+    while (1) {
+        printf("Nouvelle année de publication (1450 - 2026) : ");
+        if (scanf("%d", &nouvelle_annee) == 1) {
+            vider_buffer(); // Toujours nettoyer le buffer après un scanf int
+
+            if (nouvelle_annee >= 1450 && nouvelle_annee <= 2026) {
+                b->livres->annee_publication = nouvelle_annee;
+                printf("[Succès] Année mise à jour.\n");
+                break;
+            }
+        } else {
+            vider_buffer();
+        }
+        fprintf(stderr, "[Erreur] Année invalide. Veuillez recommencer.\n");
     }
-    vider_buffer();  // Consomme le '\n' laissé par scanf
-    b->livres[index].annee_publication = nouvelle_annee;
 }
 
-void menu_catologue_livre (Bibliotheque *biblio) {
+void menu_catalogue_livre (Bibliotheque *biblio) {
     int choix_cat = 0;
     do {
         printf("\n--- GESTION DU CATALOGUE ---\n");
