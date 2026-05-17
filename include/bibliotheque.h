@@ -102,6 +102,42 @@ void modifier_livre(Bibliotheque *bibliotheque, int id);
 void supprimer_livre(Bibliotheque *bibliotheque, int id);
 
 /**
+ * @brief Fonction pour supprimer un livre de la bibliothèque par index dans le tableau.
+ * Elle prend en paramètre un pointeur vers une structure Bibliotheque et un entier représentant l'index du livre à supprimer, et supprime le livre correspondant de la bibliothèque en réorganisant le tableau de livres pour combler l'espace laissé par le livre supprimé.
+ * @param bibliotheque Un pointeur vers une structure Bibliotheque dans laquelle le livre sera supprimé.
+ * @param index L'index du livre à supprimer de la bibliothèque.
+ * @return void
+ */
+void supprimer_livre_par_index (Bibliotheque *bibliotheque, int index);
+
+/**
+ * @brief Fonction pour supprimer un livre de la bibliothèque par son auteur.
+ * Elle prend en paramètre un pointeur vers une structure Bibliotheque et une chaîne de caractères représentant l'auteur du livre à supprimer, et supprime tous les livres correspondants de la bibliothèque.
+ * @param bibliotheque Un pointeur vers une structure Bibliotheque dans laquelle le livre sera supprimé.
+ * @param auteur L'auteur du livre à supprimer de la bibliothèque.
+ * @return void
+ */
+void supprimer_livre_par_auteur(Bibliotheque *bibliotheque, const char *auteur);
+
+/**
+ * @brief Fonction pour supprimer un livre de la bibliothèque par son titre.
+ * Elle prend en paramètre un pointeur vers une structure Bibliotheque et une chaîne de caractères représentant le titre du livre à supprimer, et supprime tous les livres correspondants de la bibliothèque.
+ * @param bibliotheque Un pointeur vers une structure Bibliotheque dans laquelle le livre sera supprimé.
+ * @param titre Le titre du livre à supprimer de la bibliothèque.
+ * @return void
+ */
+void supprimer_livre_par_titre(Bibliotheque *bibliotheque, const char *titre);
+
+/**
+ * @brief Fonction pour supprimer un livre de la bibliothèque par son ISBN.
+ * Elle prend en paramètre un pointeur vers une structure Bibliotheque et une chaîne de caractères représentant l'ISBN du livre à supprimer, et supprime tous les livres correspondants de la bibliothèque.
+ * @param bibliotheque Un pointeur vers une structure Bibliotheque dans laquelle le livre sera supprimé.
+ * @param isbn L'ISBN du livre à supprimer de la bibliothèque.
+ * @return void
+ */
+void supprimer_livre_par_isbn(Bibliotheque *bibliotheque, const char *isbn);
+
+/**
  * @brief Fonction pour trier les livres de la bibliothèque par ordre alphabétique de leur titre.
  * Elle prend en paramètre un pointeur vers une structure Bibliotheque et trie le tableau de livres de la bibliothèque en utilisant la fonction comparer_livres pour comparer les titres des livres et les réorganiser dans l'ordre alphabétique.
  * @param bibliotheque Un pointeur vers une structure Bibliotheque dont les livres seront triés.

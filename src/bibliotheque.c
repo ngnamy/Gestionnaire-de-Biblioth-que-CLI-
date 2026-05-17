@@ -167,6 +167,45 @@ void supprimer_livre(Bibliotheque *bibliotheque, int id) {
     printf("Livre supprimé avec succès.\n");
 }
 
+void supprimer_livre_par_auteur(Bibliotheque *bibliotheque, const char *auteur) {
+    int index = rechercher_livre_par_auteur(bibliotheque, bibliotheque->nb_livres, auteur);
+    if (index == -1) {
+        printf("Aucun livre de cet auteur trouvé.\n");
+        return;
+    }
+    supprimer_livre_par_index(bibliotheque, index);
+}
+
+void supprimer_livre_par_index (Bibliotheque *bibliotheque, int index) {
+    if (index < 0 || index >= bibliotheque->nb_livres) {
+        fprintf(stderr, "Erreur : Index de livre invalide pour suppression.\n");
+        return;
+    }
+    for (int i = index; i < bibliotheque->nb_livres - 1; i++) {
+        bibliotheque->livres[i] = bibliotheque->livres[i + 1];
+    }
+    bibliotheque->nb_livres--;
+    printf("Livre supprimé avec succès.\n");
+}
+
+void supprimer_livre_par_titre (Bibliotheque *bibliotheque, const char *titre) {
+    int index = rechercher_livre_par_titre(bibliotheque, bibliotheque->nb_livres, titre);
+    if (index == -1) {
+        printf("Aucun livre avec ce titre trouvé.\n");
+        return;
+    }
+    supprimer_livre_par_index(bibliotheque, index);
+}
+
+void supprimer_titre_par_isbn (Bibliotheque *bibliotheque, const char *isbn) {
+    int index = rechercher_livre_par_isbn(bibliotheque, bibliotheque->nb_livres, isbn);
+    if (index == -1) {
+        printf("Aucun livre avec cet ISBN trouvé.\n");
+        return;
+    }
+    supprimer_livre_par_index(bibliotheque, index);
+}
+
 void trier_bibliotheque(Bibliotheque *bibliotheque) {
     if (bibliotheque == NULL || bibliotheque->nb_livres < 2) return;
     qsort(bibliotheque->livres, bibliotheque->nb_livres, sizeof(Livre), (int (*)(const void *, const void *))comparer_livres);

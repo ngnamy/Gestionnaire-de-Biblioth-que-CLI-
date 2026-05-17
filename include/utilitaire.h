@@ -127,6 +127,15 @@ int rechercher_livre_par_titre(const Bibliotheque *biblio, int taille, const cha
 int rechercher_livre_par_auteur(const Bibliotheque *biblio, int taille, const char *auteur);
 
 /**
+ * @brief Fonction permet de rechercher un livre dans le tableau de livres en utilisant son ISBN.
+ * @param biblio Un pointeur vers la structure de la bibliothèque.
+ * @param isbn L'ISBN du livre à rechercher.
+ * @param taille Un entier représentant la taille du tableau de livre.
+ * @return int Un entier representant l'index du livre dans le tableau ou -1 dans le cas où aucun livre n'a été trouvé.
+ */
+int rechercher_livre_par_isbn(const Bibliotheque *biblio, int taille, const char *isbn);
+
+/**
  * @brief Fonction qui permet de supprimer des caractères vides en début et fin de chaine.
  * @param str Un pointeur vers la chaine de caractère.
  * @return Un pointeur vers la chaine de caractère après suppression des caractères vides en début et fin de chaine.
@@ -146,5 +155,13 @@ int est_bissextile(int annee);
  * @return int Un entier 1 si l'année est bissextile 0 si elle ne l'est pas. 
  */
 int valider_date_inscription_membre(const char *date);
+
+/**
+ * @brief Fonction qui convertit une chaîne de caractères en minuscules.
+ * @param str La chaîne de caractères à convertir.
+ * @param str_len La longueur de la chaîne de caractères.
+ * @return Un pointeur vers la nouvelle chaîne de caractères convertie en minuscules.
+ */
+char *str_toLower(const char *str, int str_len);
 
 #endif
