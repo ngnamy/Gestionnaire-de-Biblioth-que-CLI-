@@ -161,6 +161,11 @@ void modifier_titre(Bibliotheque *b, int index) {
     printf("Nouveau titre : ");
     fgets(nouveau_titre, TAILLE_MAX_TITRE, stdin);
     nouveau_titre[strcspn(nouveau_titre, "\n")] = '\0'; // supprime le saut de ligne
+    char *nouveau_titre_trim = str_trim(nouveau_titre);
+    if (str_trim(nouveau_titre_trim) <= 0) {
+        fprintf(stderr, "Erreur : la chaine de caractère est vide.");
+        return;
+    }
     strncpy(b->livres[index].titre, nouveau_titre, TAILLE_MAX_TITRE - 1);
     b->livres[index].titre[TAILLE_MAX_TITRE - 1] = '\0';
 }
@@ -170,6 +175,11 @@ void modifier_auteur (Bibliotheque *b, int index) {
     printf("Nouvel auteur : ");
     fgets(nouveau_auteur, TAILLE_MAX_AUTEUR, stdin);
     nouveau_auteur[strcspn(nouveau_auteur, "\n")] = '\0'; // supprime le saut de ligne
+    char *nouveau_auteur_trim = str_trim(nouveau_auteur);
+    if (strlen(nouveau_auteur_trim) <= 0) {
+        fprintf(stderr, "Erreur : la chaine de caractère est vide.");
+        return;
+    }
     strncpy(b->livres[index].auteur, nouveau_auteur, TAILLE_MAX_AUTEUR - 1);
     b->livres[index].auteur[TAILLE_MAX_AUTEUR - 1] = '\0';
 }
