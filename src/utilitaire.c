@@ -215,7 +215,7 @@ void menu_catalogue_livre (Bibliotheque *biblio) {
         printf("Choix : ");
         scanf("%d", &choix_cat); vider_buffer();
         switch(choix_cat) {
-            case 1: afficher_bibliotheque(biblio); break;
+            case 1: {afficher_bibliotheque(biblio); break;}
             case 2: {
                 Livre n; saisir_livre(&n, biblio->prochain_id_livre++);
                 ajouter_livre(biblio, n); break;
@@ -223,7 +223,7 @@ void menu_catalogue_livre (Bibliotheque *biblio) {
             case 3: {
                 int choix_rech;
                 printf("\n--- Rechercher par ---\n");
-                printf("1. ID\n2. Auteur\n3. Titre\nChoix : ");
+                printf("1. ID\n2. Auteur\n3. Titre\n4. Annuler\nChoix : ");
                 if (scanf("%d", &choix_rech) != 1) {
                     vider_buffer();
                     printf("Choix invalide.\n");
@@ -249,10 +249,13 @@ void menu_catalogue_livre (Bibliotheque *biblio) {
                     fgets(titre, TAILLE_MAX_TITRE, stdin);
                     titre[strcspn(titre, "\n")] = 0;
                     idx = rechercher_livre_par_titre(biblio, biblio->nb_livres, titre);
-                }
+                } else if (choix_rech == 4) {printf("Choix annulé.\n"); break;}
 
-                if(idx != -1) afficher_livre(&biblio->livres[idx]);
-                else printf("Livre introuvable.\n");
+                if(idx != -1) {
+                    afficher_livre(&biblio->livres[idx]);
+                } else {
+                    printf("Livre introuvable.\n");
+                }
                 break;
             }
             case 4: {
@@ -298,6 +301,7 @@ void menu_catalogue_livre (Bibliotheque *biblio) {
                     }
                     break;
                 }
+                break;  // Empêche le fall-through vers case 5
             }
             case 5: {
                 printf("Veillez entrer la méthode de suppression.\n");
@@ -353,8 +357,8 @@ void menu_catalogue_livre (Bibliotheque *biblio) {
                     fprintf(stderr, "Choix invalide.\n");
                     break;
                 }
-                break;}
-            case 6: 
+                break;
+            }
             case 6: {
                 printf("Trier les livres par\n1. ID\n2. Titre\n3. Auteur\n4. Annuler\nVotre choix : ");
                 int choix_t;

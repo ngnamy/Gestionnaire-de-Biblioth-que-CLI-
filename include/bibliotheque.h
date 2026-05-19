@@ -104,7 +104,16 @@ void modifier_livre_par_auteur(Bibliotheque * bibliotheque, const char *auteur);
  * @param isbn L'ISBN du livre à modifier dans la bibliothèque.
  * @return void
  */
-void modifier_livre_par_isbn(const Bibliotheque *bibliotheque, int taille, const char *isbn);
+void modifier_livre_par_isbn(Bibliotheque * bibliotheque, const char *isbn);
+
+/**
+ * @brief Fonction pour modifier les informations d'un livre dans la bibliothèque par son titre.
+ * Elle prend en paramètre un pointeur vers une structure Bibliotheque et une chaîne de caractères représentant le titre du livre à modifier, recherche le livre correspondant dans le tableau de livres de la bibliothèque, et si le livre est trouvé, permet de mettre à jour les informations du livre en appelant la fonction modifier_livre pour effectuer les modifications nécessaires.
+ * @param bibliotheque Un pointeur vers une structure Bibliotheque dans laquelle le livre sera modifié.
+ * @param titre Le titre du livre à modifier dans la bibliothèque.
+ * @return void
+ */
+void modifier_livre_par_titre(Bibliotheque * bibliotheque, const char *titre);
 
 /**
  * @brief Fonction pour modifier les informations d'un livre dans la bibliothèque.
