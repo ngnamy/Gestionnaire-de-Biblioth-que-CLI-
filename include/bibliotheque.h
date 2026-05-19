@@ -1,10 +1,6 @@
 #ifndef BIBLIOTHEQUE_H
 #define BIBLIOTHEQUE_H
 
-// Déclarations anticipées pour résoudre les dépendances circulaires
-typedef struct Livre Livre;
-typedef struct Membre Membre;
-
 #include "livre.h"
 #include "membres.h"
 
@@ -84,6 +80,33 @@ void afficher_bibliotheque(const Bibliotheque *bibliotheque);
 int rechercher_livre(const Bibliotheque *bibliotheque, int id);
 
 /**
+ * @brief Fonction pour modifier les informations d'un livre dans la bibliothèque par son identifiant.
+ * Elle prend en paramètre un pointeur vers une structure Bibliotheque et un entier représentant l'identifiant du livre à modifier, recherche le livre correspondant dans le tableau de livres de la bibliothèque, et si le livre est trouvé, permet de mettre à jour les informations du livre en appelant la fonction modifier_livre pour effectuer les modifications nécessaires.
+ * @param bibliotheque Un pointeur vers une structure Bibliotheque dans laquelle le livre sera modifié.
+ * @param id L'identifiant du livre à modifier dans la bibliothèque.
+ * @return void
+ */
+void modifier_livre_par_id(const Bibliotheque *bibliotheque, int taille, int id);
+
+/**
+ * @brief Fonction pour modifier les informations d'un livre dans la bibliothèque par son auteur.
+ * Elle prend en paramètre un pointeur vers une structure Bibliotheque et une chaîne de caractères représentant l'auteur du livre à modifier, recherche le livre correspondant dans le tableau de livres de la bibliothèque, et si le livre est trouvé, permet de mettre à jour les informations du livre en appelant la fonction modifier_livre pour effectuer les modifications nécessaires.
+ * @param bibliotheque Un pointeur vers une structure Bibliotheque dans laquelle le livre sera modifié.
+ * @param auteur L'auteur du livre à modifier dans la bibliothèque.
+ * @return void
+ */
+void modifier_livre_par_auteur(Bibliotheque * bibliotheque, const char *auteur);
+
+/**
+ * @brief Fonction pour modifier les informations d'un livre dans la bibliothèque par son ISBN.
+ * Elle prend en paramètre un pointeur vers une structure Bibliotheque et une chaîne de caractères représentant l'ISBN du livre à modifier, recherche le livre correspondant dans le tableau de livres de la bibliothèque, et si le livre est trouvé, permet de mettre à jour les informations du livre en appelant la fonction modifier_livre pour effectuer les modifications nécessaires.
+ * @param bibliotheque Un pointeur vers une structure Bibliotheque dans laquelle le livre sera modifié.
+ * @param isbn L'ISBN du livre à modifier dans la bibliothèque.
+ * @return void
+ */
+void modifier_livre_par_isbn(const Bibliotheque *bibliotheque, int taille, const char *isbn);
+
+/**
  * @brief Fonction pour modifier les informations d'un livre dans la bibliothèque.
  * Elle prend en paramètre un pointeur vers une structure Bibliotheque et un entier représentant l'identifiant du livre à modifier, et permet de mettre à jour les informations du livre correspondant.
  * @param bibliotheque Un pointeur vers une structure Bibliotheque dans laquelle le livre sera modifié.
@@ -135,7 +158,7 @@ void supprimer_livre_par_titre(Bibliotheque *bibliotheque, const char *titre);
  * @param isbn L'ISBN du livre à supprimer de la bibliothèque.
  * @return void
  */
-// void supprimer_livre_par_isbn(Bibliotheque *bibliotheque, const char *isbn);
+void supprimer_livre_par_isbn(Bibliotheque *bibliotheque, const char *isbn);
 
 /**
  * @brief Fonction pour trier les livres de la bibliothèque par ordre alphabétique de leur titre.
@@ -144,6 +167,22 @@ void supprimer_livre_par_titre(Bibliotheque *bibliotheque, const char *titre);
  * @return void
  */
 void trier_bibliotheque(Bibliotheque *bibliotheque);
+
+/**
+ * @brief Fonction pour trier les livres de la bibliothèque par ordre alphabétique de leur auteur.
+ * Elle prend en paramètre un pointeur vers une structure Bibliotheque et trie le tableau de livres de la bibliothèque en utilisant la fonction comparer_livres_par_auteur pour comparer les auteurs des livres et les réorganiser dans l'ordre alphabétique.
+ * @param bibliotheque Un pointeur vers une structure Bibliotheque dont les livres seront triés.
+ * @return void
+ */
+void trier_bibliotheque_par_auteur(Bibliotheque *bibliotheque);
+
+/**
+ * @brief Fonction pour trier les livres de la bibliothèque par ordre numérique de leur identifient.
+ * Elle prend en paramètre un pointeur vers une structure Bibliotheque et trie le tableau de livres de la bibliothèque en utilisant la fonction comparer_livres_par_identifient pour comparer les auteurs des livres et les réorganiser dans l'ordre numérique.
+ * @param bibliotheque Un pointeur vers une structure Bibliotheque dont les livres seront triés.
+ * @return void
+ */
+void trier_bibliotheque_par_id(Bibliotheque *bibliotheque);
 
 /**
  * @brief Fonction pour sauvegarder les informations de la bibliothèque dans un fichier.

@@ -121,6 +121,33 @@ void modifier_livre(Bibliotheque *bibliotheque, int id) {
     } while (choix != 5);
 }
 
+void modifier_livre_par_auteur(Bibliotheque * bibliotheque, const char *auteur) {
+    int index = rechercher_livre_par_auteur(bibliotheque, bibliotheque->nb_livres, auteur);
+    if (index < 0) {
+        fprintf(stderr, "Erreur : Aucun livre de l'auteur '%s' trouvé.\n", auteur);
+        return;
+    }
+    modifier_livre(bibliotheque, bibliotheque->livres[index].id);
+}
+
+void modifier_livre_par_titre(Bibliotheque * bibliotheque, const char *titre) {
+    int index = rechercher_livre_par_titre(bibliotheque, bibliotheque->nb_livres, titre);
+    if (index < 0) {
+        fprintf(stderr, "Erreur : Aucun livre avec le titre '%s' trouvé.\n", titre);
+        return;
+    }
+    modifier_livre(bibliotheque, bibliotheque->livres[index].id);
+}
+
+void modifier_livre_par_isbn(Bibliotheque * bibliotheque, const char *isbn) {
+    int index = rechercher_livre_par_isbn(bibliotheque, bibliotheque->nb_livres, isbn);
+    if (index < 0) {
+        fprintf(stderr, "Erreur : Aucun livre avec l'ISBN '%s' trouvé.\n", isbn);
+        return;
+    }
+    modifier_livre(bibliotheque, bibliotheque->livres[index].id);
+}
+
 void inscrire_membre(Bibliotheque *bibliotheque) {
     if (bibliotheque->nb_membres >= bibliotheque->capacite_membres) {
         int nouvelle_capacite = bibliotheque->capacite_membres * 2;
@@ -197,19 +224,31 @@ void supprimer_livre_par_titre (Bibliotheque *bibliotheque, const char *titre) {
     supprimer_livre_par_index(bibliotheque, index);
 }
 
-// void supprimer_titre_par_isbn (Bibliotheque *bibliotheque, const char *isbn) {
-//     int index = rechercher_livre_par_isbn(bibliotheque, bibliotheque->nb_livres, isbn);
-//     if (index == -1) {
-//         printf("Aucun livre avec cet ISBN trouvé.\n");
-//         return;
-//     }
-//     supprimer_livre_par_index(bibliotheque, index);
-// }
+void supprimer_livre_par_isbn (Bibliotheque *bibliotheque, const char *isbn) {
+    int index = rechercher_livre_par_isbn(bibliotheque, bibliotheque->nb_livres, isbn);
+    if (index == -1) {
+        printf("Aucun livre avec cet ISBN.\n");
+        return;
+    }
+    supprimer_livre_par_index(bibliotheque, index);
+}
 
 void trier_bibliotheque(Bibliotheque *bibliotheque) {
     if (bibliotheque == NULL || bibliotheque->nb_livres < 2) return;
     qsort(bibliotheque->livres, bibliotheque->nb_livres, sizeof(Livre), (int (*)(const void *, const void *))comparer_livres);
     printf("Catalogue trié par titre avec succès.\n");
+}
+
+void trier_bibliotheque_par_auteur(Bibliotheque *bibliotheque) {
+    if (bibliotheque == NULL || bibliotheque->nb_livres < 2) return;
+    qsort(bibliotheque->livres, bibliotheque->nb_livres, sizeof(Livre), (int (*)(const void *, const void *))comparer_livres_par_auteur);
+    printf("Catalogue trié par auteur avec succès.\n");
+}
+
+void trier_bibliotheque_par_id(Bibliotheque *bibliotheque) {
+    if (bibliotheque == NULL || bibliotheque->nb_livres < 2) return;
+    qsort(bibliotheque->livres, bibliotheque->nb_livres, sizeof(Livre), (int (*)(const void *, const void *))comparer_livres_par_id);
+    printf("Catalogue trié par ID avec succès.\n");
 }
 
 void radier_membre(Bibliotheque *bibliotheque, int id_membre) {

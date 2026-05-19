@@ -1,7 +1,8 @@
-#include "livre.h"
-#include "bibliotheque.h"
 #ifndef UTILITAIRE_H
 #define UTILITAIRE_H
+
+#include "livre.h"
+#include "bibliotheque.h"
 
 #define DUREE_EMPRUNT 11
 

@@ -57,10 +57,29 @@ void afficher_livre(const Livre *livre);
  * et compare les titres des livres de manière lexicographique.
  * @param livre_a Un pointeur vers la première structure Livre à comparer.
  * @param livre_b Un pointeur vers la deuxième structure Livre à comparer.
- * @return Un entier négatif si le titre du livre a est inférieur au titre du livre b,
- *         zéro si les titres sont égaux, ou un entier positif si le titre du livre a est supérieur au titre du livre b.
+ * @return Un entier négatif si le titre du livre a est inférieur au titre du livre b, zéro si les titres sont égaux, ou un entier positif si le titre du livre a est supérieur au titre du livre b.
  */
 int comparer_livres(const Livre *livre_a, const Livre *livre_b);
+
+/**
+ * @brief Fonction pour comparer deux livres.
+ * Elle prends en paramètre deux pointeurs vers des structures Livre
+ * et compare les auteurs des livres de manière lexicographique.
+ * @param livre_a Un pointeur vers la première structure Livre à comparer.
+ * @param livre_b Un pointeur vers la deuxième structure Livre à comparer.
+ * @return Un entier négatif si l'auteur du livre a est inférieur a l'auteur du livre b, zéro si les auteurs sont égaux, ou un entier positif si l'auteur du livre a est supérieur au l'auteur du livre b.
+ */
+int comparer_livres_par_auteur(const Livre *Livre_a, const Livre *Livre_b);
+
+/**
+ * @brief Fonction pour comparer deux livres.
+ * Elle prends en paramètre deux pointeurs vers des structures Livre
+ * et compare les auteurs des livres de manière numérique.
+ * @param livre_a Un pointeur vers la première structure Livre à comparer.
+ * @param livre_b Un pointeur vers la deuxième structure Livre à comparer.
+ * @return Un entier négatif si l'identifient du livre a est inférieur a l'identifient du livre b, ou un entier positif si l'identifient du livre a est supérieur au l'identifient du livre b.
+ */
+int comparer_livres_par_id(const Livre *Livre_a, const Livre *Livre_b);
 
 /**
  * @brief Fonction pour sauvegarder les informations d'un livre dans un fichier.

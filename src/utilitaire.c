@@ -167,6 +167,7 @@ void modifier_titre(Bibliotheque *b, int index) {
         return;
     }
     strncpy(b->livres[index].titre, nouveau_titre, TAILLE_MAX_TITRE - 1);
+    strncpy(b->livres[index].titre, nouveau_titre_trim, TAILLE_MAX_TITRE - 1);
     b->livres[index].titre[TAILLE_MAX_TITRE - 1] = '\0';
 }
 
@@ -181,6 +182,7 @@ void modifier_auteur (Bibliotheque *b, int index) {
         return;
     }
     strncpy(b->livres[index].auteur, nouveau_auteur, TAILLE_MAX_AUTEUR - 1);
+    strncpy(b->livres[index].auteur, nouveau_auteur_trim, TAILLE_MAX_AUTEUR - 1);
     b->livres[index].auteur[TAILLE_MAX_AUTEUR - 1] = '\0';
     printf("Réussie : Modification du nom de l'auteur effectuée.");
 }
@@ -209,7 +211,7 @@ void menu_catalogue_livre (Bibliotheque *biblio) {
     do {
         printf("\n--- GESTION DU CATALOGUE ---\n");
         printf("1. Afficher tous les livres\n2. Ajouter un livre\n3. Rechercher un livre \n");
-        printf("4. Modifier un livre\n5. Supprimer un livre\n6. Trier par titre\n7. Retour\n");
+        printf("4. Modifier un livre\n5. Supprimer un livre\n6. Trier le catalogue de livre\n7. Retour\n");
         printf("Choix : ");
         scanf("%d", &choix_cat); vider_buffer();
         switch(choix_cat) {
@@ -254,14 +256,130 @@ void menu_catalogue_livre (Bibliotheque *biblio) {
                 break;
             }
             case 4: {
-                int id; printf("ID à modifier : "); scanf("%d", &id); vider_buffer();
-                modifier_livre(biblio, id); break;
+                printf("Veillez choisir la méthode de modification\n");
+                printf("1. ID\n2. Auteur\n3. Titre\n4. Annuler\nVotre choix : ");
+                int choix_mod;
+                if (scanf("%d", &choix_mod) != 1) {
+                    fprintf(stderr, "Choix invalide.\n");
+                    vider_buffer();
+                    break;
+                }
+                vider_buffer();
+
+                if (choix_mod == 1) {
+                    int id;
+                    printf("ID à modifier : ");
+                    if (scanf("%d", &id) != 1) {
+                        fprintf(stderr, "Erreur : ID non valide, dois être un entier positif.");
+                        vider_buffer();
+                        return;
+                    }
+                    vider_buffer();
+                    modifier_livre(biblio, id); break;
+                } else if (choix_mod == 2) {
+                    char auteur[TAILLE_MAX_AUTEUR];
+                    printf("Auteur à modifier : ");
+                    if (fgets(auteur, TAILLE_MAX_AUTEUR, stdin) != NULL) {
+                        auteur[strcspn(auteur, "\n")] = 0;
+                        modifier_livre_par_auteur(biblio, auteur);
+                    } else {
+                        fprintf(stderr, "Erreur de lecture de l'auteur.\n");
+                    }
+                    break;
+                    
+                } else if (choix_mod == 3) {
+                    char titre[TAILLE_MAX_TITRE];
+                    printf("Titre à modifier : ");
+                    if (fgets(titre, TAILLE_MAX_TITRE, stdin) != NULL) {
+                        titre[strcspn(titre, "\n")] = 0;
+                        modifier_livre_par_titre(biblio, titre);
+                    } else {
+                        fprintf(stderr, "Erreur de lecture du titre.\n");
+                    }
+                    break;
+                }
             }
             case 5: {
-                int id; printf("ID à supprimer : "); scanf("%d", &id); vider_buffer();
-                supprimer_livre(biblio, id); break;
+                printf("Veillez entrer la méthode de suppression.\n");
+                printf("1. ID\n2. Auteur\n3. Titre\n4. ISBN\n5. Annuler\nVotre choix : ");
+                int choix_sup;
+                if (scanf("%d", &choix_sup) != 1) {
+                    fprintf(stderr, "Choix invalide.\n");
+                    vider_buffer();
+                    break;
+                }
+                vider_buffer(); // Nettoie le '\n' pour que les fgets suivants fonctionnent
+
+                switch (choix_sup)
+                {
+                case 1: {
+                    printf("ID à supprimer : ");
+                    int id;
+                    if (scanf("%d", &id) == 1) {
+                        supprimer_livre(biblio, id);
+                    } else {
+                        fprintf(stderr, "ID invalide.\n");
+                    }
+                    break; 
+                }
+                case 2: {
+                    printf("Auteur à supprimer : ");
+                    char auteur[TAILLE_MAX_AUTEUR];
+                    fgets(auteur, TAILLE_MAX_AUTEUR, stdin);
+                    auteur[strcspn(auteur, "\n")] = 0;
+                    supprimer_livre_par_auteur(biblio, auteur);
+                    break; 
+                }
+                case 3: {
+                    printf("Titre à supprimer : ");
+                    char titre[TAILLE_MAX_TITRE];
+                    fgets(titre, TAILLE_MAX_TITRE, stdin);
+                    titre[strcspn(titre, "\n")] = 0;
+                    supprimer_livre_par_titre(biblio, titre);
+                    break; 
+                }
+                case 4: {
+                    printf("ISBN à supprimer : ");
+                    char isbn[TAILLE_MAX_ISBN];
+                    fgets(isbn, TAILLE_MAX_ISBN, stdin);
+                    isbn[strcspn(isbn, "\n")] = 0;
+                    supprimer_livre_par_isbn(biblio, isbn);
+                    break; 
+                }
+                case 5: {
+                    break; // Annuler
+                }
+                default:
+                    fprintf(stderr, "Choix invalide.\n");
+                    break;
+                }
+                break;}
+            case 6: 
+            case 6: {
+                printf("Trier les livres par\n1. ID\n2. Titre\n3. Auteur\n4. Annuler\nVotre choix : ");
+                int choix_t;
+                if (scanf("%d", &choix_t) != 1) {
+                    fprintf(stderr, "Erreur : le choix dois être un entier positif valide.");
+                    vider_buffer();
+                    return;
+                }
+                vider_buffer();
+
+                if (choix_t == 1) {
+                    trier_bibliotheque_par_id(biblio);
+                } else if (choix_t == 2) {
+                    trier_bibliotheque(biblio);
+                } else if (choix_t == 3) {
+                    trier_bibliotheque_par_auteur(biblio);
+                } else if (choix_t == 4) {
+                    printf("Choix annuler.");
+                    break;
+                } else {
+                    printf("choix invalide.");
+                    break;
+                }
+                break;
             }
-            case 6: trier_bibliotheque(biblio); break;
         }
     } while (choix_cat != 7);
 }
@@ -304,6 +422,7 @@ void menu_gestion_membres (Bibliotheque *biblio) {
                 }
                 break;
             case 4:
+                {
                 int id_membre;
                 printf("Entrez l'ID du membre à modifier : ");
 
@@ -313,6 +432,7 @@ void menu_gestion_membres (Bibliotheque *biblio) {
                 } else {
                     fprintf(stderr, "ID invalide.\n");
                     vider_buffer();
+                }
                 }
                 break;  // ← break manquant : empêchait le fall-through vers case 5
             case 5: break; // Retour au menu principal
@@ -378,11 +498,24 @@ int rechercher_livre_par_auteur(const Bibliotheque *biblio, int taille, const ch
     }
     Livre *livres = biblio->livres;
 
-    for (int i = 0; i < taille; i++) {
-        if (strcmp(livres[i].auteur, auteur) == 0)
-            return i;   // retourne le premier livre trouvé
+    if(auteur == NULL || strlen(auteur) == 0) {
+        fprintf(stderr, "Erreur : L'auteur ne doit pas être vide.");
+        return -1;
     }
-    return -1;
+    char *auteur_lower = str_toLower(auteur, TAILLE_MAX_AUTEUR);
+    int result = -1;
+
+    for (int i = 0; i < taille; i++) {
+        char *auteur_toLower = str_toLower(livres[i].auteur, TAILLE_MAX_AUTEUR);
+        if (auteur_toLower && auteur_lower && strcmp(auteur_toLower, auteur_lower) == 0) {
+            result = i;
+            free(auteur_toLower);
+            break;
+        }
+        free(auteur_toLower);
+    }
+    free(auteur_lower);
+    return result;
 }
 
 int rechercher_livre_par_titre(const Bibliotheque *biblio, int taille, const char *titre) {
@@ -392,8 +525,35 @@ int rechercher_livre_par_titre(const Bibliotheque *biblio, int taille, const cha
     }
     Livre *livres = biblio->livres;
 
+    if(titre == NULL || strlen(titre) == 0) {
+        fprintf(stderr, "Erreur : Le titre ne doit pas être vide.");
+        return -1;
+    }
+    char *titre_lower = str_toLower(titre, TAILLE_MAX_TITRE);
+    int result = -1;
+
     for (int i = 0; i < taille; i++) {
-        if (strcmp(livres[i].titre, titre) == 0)
+        char *titre_toLower = str_toLower(livres[i].titre, TAILLE_MAX_TITRE);
+        if (titre_toLower && titre_lower && strcmp(titre_toLower, titre_lower) == 0) {
+            result = i;
+            free(titre_toLower);
+            break;
+        }
+        free(titre_toLower);
+    }
+    free(titre_lower);
+    return result;
+}
+
+int rechercher_livre_par_isbn(const Bibliotheque *biblio, int taille, const char *isbn) {
+    if (biblio == NULL || biblio->livres == NULL) {
+        fprintf(stderr, "Erreur : bibliothèque non initialisée\n");
+        return -1;
+    }
+    Livre *livres = biblio->livres;
+
+    for (int i = 0; i < taille; i++) {
+        if (strcmp(livres[i].isbn, isbn) == 0)
             return i;
     }
     return -1;
@@ -456,4 +616,17 @@ int valider_date_inscription_membre(const char *date) {
     }
 
     return 1;
+}
+
+char *str_toLower(const char *str, int str_len) {
+    if (str == NULL) return NULL;
+    char *lower_str = malloc(str_len + 1);
+    if (lower_str == NULL) return NULL;
+    
+    for (int i = 0; i < str_len; i++) {
+        lower_str[i] = (char)tolower((unsigned char)str[i]);
+        if (str[i] == '\0') break;
+    }
+    lower_str[str_len] = '\0';
+    return lower_str;
 }
