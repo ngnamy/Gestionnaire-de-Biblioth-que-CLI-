@@ -20,7 +20,7 @@
  * @param fichier_livres Le nom du fichier où les informations des livres sont sauvegardées ou chargées.
  * @param fichier_membres Le nom du fichier où les informations des membres sont sauvegardées ou chargées.
  */
-typedef struct {
+typedef struct Bibliotheque {
     Livre *livres;
     int nb_livres;
     int prochain_id_livre;

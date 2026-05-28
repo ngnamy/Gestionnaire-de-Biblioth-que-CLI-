@@ -8,6 +8,9 @@
 
 #include <stdio.h>
 
+// Déclaration anticipée pour éviter la dépendance circulaire
+struct Bibliotheque;
+
 /**
  * @brief Structure représentant un livre de la bibliothèque.
  * Elle contient les informations suivantes :
@@ -37,10 +40,11 @@ typedef struct Livre {
  * Elle prend en paramètre un pointeur vers une structure Livre
  * et remplit les champs de cette structure avec les données saisies par l'utilisateur.
  * @param livre Un pointeur vers une structure Livre à remplir avec les données saisies par l'utilisateur.
+ * @param bibliotheque Un pointeur vers la structure de la bibliothèque, utilisé pour vérifier l'unicité de l'ISBN lors de la saisie du livre.
  * @param prochain_id Un entier qui représente le prochain identifiant
  * @return void
  */
-void saisir_livre(Livre *livre, Bibliotheque *bibliotheque, int prochain_id);
+void saisir_livre(Livre *livre, struct Bibliotheque *bibliotheque, int prochain_id);
 
 /**
  * Fonction pour afficher les informations d'un livre.

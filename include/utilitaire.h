@@ -166,7 +166,7 @@ int valider_date_inscription_membre(const char *date);
 char *str_toLower(const char *str, int str_len);
 
 /**
- * @brief Fonction pour vérifier l'unicité d'un code isbn dans une bibliothèque
+ * @brief Fonction pour vérifier l'unicité d'un code isbn dans une bibliothèque, en parcourant le tableau de livres de la bibliothèque et en comparant l'ISBN de chaque livre avec l'ISBN fourni en paramètre. Si un livre avec le même ISBN est trouvé, la fonction retourne 0 pour indiquer que l'ISBN n'est pas unique. Si aucun livre avec le même ISBN n'est trouvé après avoir parcouru tout le tableau, la fonction retourne 1 pour indiquer que l'ISBN est unique dans la bibliothèque.
  * @param bibliotheque Un pointeur vers la structure de la bibliothèque.    
  * @param isbn L'ISBN à vérifier pour l'unicité.
  * @return int Un entier 1 si l'ISBN est unique dans la bibliothèque, 0 sinon.

@@ -5,6 +5,7 @@
 
 #include "../include/livre.h"
 #include "../include/utilitaire.h"
+#include "../include/bibliotheque.h"
 
 
 int est_isbn_valide(const char *isbn, int type) {
@@ -42,7 +43,7 @@ int est_isbn_valide(const char *isbn, int type) {
     return 0;
 }
 
-void saisir_livre(Livre *livre, Bibliotheque *bibliotheque, int prochain_id) {
+void saisir_livre(Livre *livre, struct Bibliotheque *bibliotheque, int prochain_id) {
     int choix;
     int annee_pub;
     int annee_ac = annee_actuelle();
