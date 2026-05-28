@@ -173,4 +173,13 @@ char *str_toLower(const char *str, int str_len);
  */
 int validate_Unique_Isbn(Bibliotheque *bibliotheque, const char *isbn);
 
+/**
+ * @brief Fonction pour trouver un ou plusieur livre(s) associé(s) à un auteur, elle renvoi un tableau contenant tous les index des livres associé à un auteur.
+ * @param bibliotheque Un pointeur vers la structure de la bibliothèque.
+ * @param taille Un entier représentant la taille du tableau de livre.
+ * @param auteur Auteur du livre à recherher.
+ * @return Un pointeur vers le tableau d'entier, contenant les index des livres trouvés.
+ */
+int *rechercher_array_livre_par_auteur(const Bibliotheque *bibliotheque, int taille, const char *auteur);
+
 #endif

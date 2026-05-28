@@ -242,7 +242,18 @@ void menu_catalogue_livre (Bibliotheque *biblio) {
                     printf("Nom de l'auteur : ");
                     fgets(auteur, TAILLE_MAX_AUTEUR, stdin);
                     auteur[strcspn(auteur, "\n")] = 0;
-                    idx = rechercher_livre_par_auteur(biblio, biblio->nb_livres, auteur);
+                    
+                    int *resultat_array = rechercher_array_livre_par_auteur(biblio, biblio->nb_livres, auteur);
+                    if (resultat_array == NULL) {
+                        printf("Aucun livre trouvé pour cet auteur.\n");
+                    } else {
+                        for (int i = 0; resultat_array[i] != -1; i++) {
+                            afficher_livre(&biblio->livres[resultat_array[i]]);
+                        }
+                        free(resultat_array); // Libération de la mémoire
+                    }
+                    idx = -1; // On remet idx à -1 pour éviter l'affichage double après le switch
+                    break;
                 } else if (choix_rech == 3) {
                     char titre[TAILLE_MAX_TITRE];
                     printf("Titre du livre : ");
@@ -515,6 +526,44 @@ int rechercher_livre_par_auteur(const Bibliotheque *biblio, int taille, const ch
             result = i;
             free(auteur_toLower);
             break;
+        }
+        free(auteur_toLower);
+    }
+    free(auteur_lower);
+    return result;
+}
+
+int *rechercher_array_livre_par_auteur(const Bibliotheque *bibliotheque, int taille, const char *auteur) {
+        if (bibliotheque == NULL || bibliotheque->livres == NULL) {
+        fprintf(stderr, "Erreur : bibliothèque non initialisée\n");
+        return NULL;
+    }
+    Livre *livres = bibliotheque->livres;
+
+    if(auteur == NULL || strlen(auteur) == 0) {
+        fprintf(stderr, "Erreur : L'auteur ne doit pas être vide.");
+        return NULL;
+    }
+    char *auteur_lower = str_toLower(auteur, TAILLE_MAX_AUTEUR);
+    int *result = NULL;
+    int trouve = 0;
+
+    for (int i = 0; i < taille; i++) {
+        char *auteur_toLower = str_toLower(livres[i].auteur, TAILLE_MAX_AUTEUR);
+        if (auteur_toLower && auteur_lower && strcmp(auteur_toLower, auteur_lower) == 0) {
+            trouve++;
+            // On alloue trouve + 1 pour garder de la place pour la sentinelle -1
+            int *temp = realloc(result, sizeof(int) * (trouve + 1));
+            if (temp == NULL) {
+                fprintf(stderr, "Erreur de mémoire lors de la recherche par auteur.\n");
+                free(auteur_toLower);
+                free(auteur_lower);
+                free(result);
+                return NULL;
+            }
+            result = temp;
+            result[trouve - 1] = i; // Stocke l'index correct (0-indexed)
+            result[trouve] = -1;    // Marqueur de fin de tableau
         }
         free(auteur_toLower);
     }
