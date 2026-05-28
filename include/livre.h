@@ -40,7 +40,7 @@ typedef struct Livre {
  * @param prochain_id Un entier qui représente le prochain identifiant
  * @return void
  */
-void saisir_livre(Livre *livre, int prochain_id);
+void saisir_livre(Livre *livre, Bibliotheque *bibliotheque, int prochain_id);
 
 /**
  * Fonction pour afficher les informations d'un livre.

@@ -42,7 +42,7 @@ int est_isbn_valide(const char *isbn, int type) {
     return 0;
 }
 
-void saisir_livre(Livre *livre, int prochain_id) {
+void saisir_livre(Livre *livre, Bibliotheque *bibliotheque, int prochain_id) {
     int choix;
     int annee_pub;
     int annee_ac = annee_actuelle();
@@ -81,9 +81,14 @@ void saisir_livre(Livre *livre, int prochain_id) {
 
         int taille_attendue = (choix == 1) ? 10 : 13;
         if (est_isbn_valide(livre->isbn, taille_attendue)) {
-            break; // ISBN correct, on sort de la boucle
+            if (validate_Unique_Isbn(bibliotheque, livre->isbn)) {
+                break; // ISBN correct et unique, on sort de la boucle
+            } else {
+                fprintf(stderr, "Erreur : L'ISBN existe déjà dans la bibliothèque.\n");
+            }
+        } else {
+            fprintf(stderr, "Erreur : L'ISBN est invalide pour ce format.\n");
         }
-        fprintf(stderr, "Erreur : L'ISBN est invalide pour ce format.\n");
     }
 
     // --- 3. Titre du livre (utilisation de fgets pour les espaces) ---

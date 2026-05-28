@@ -165,4 +165,12 @@ int valider_date_inscription_membre(const char *date);
  */
 char *str_toLower(const char *str, int str_len);
 
+/**
+ * @brief Fonction pour vérifier l'unicité d'un code isbn dans une bibliothèque
+ * @param bibliotheque Un pointeur vers la structure de la bibliothèque.    
+ * @param isbn L'ISBN à vérifier pour l'unicité.
+ * @return int Un entier 1 si l'ISBN est unique dans la bibliothèque, 0 sinon.
+ */
+int validate_Unique_Isbn(Bibliotheque *bibliotheque, const char *isbn);
+
 #endif

@@ -217,7 +217,7 @@ void menu_catalogue_livre (Bibliotheque *biblio) {
         switch(choix_cat) {
             case 1: {afficher_bibliotheque(biblio); break;}
             case 2: {
-                Livre n; saisir_livre(&n, biblio->prochain_id_livre++);
+                Livre n; saisir_livre(&n, biblio, biblio->prochain_id_livre++);
                 ajouter_livre(biblio, n); break;
             }
             case 3: {
@@ -633,4 +633,17 @@ char *str_toLower(const char *str, int str_len) {
     }
     lower_str[str_len] = '\0';
     return lower_str;
+}
+
+int validate_Unique_Isbn(Bibliotheque *bibliotheque, const char *isbn) {
+    if (bibliotheque == NULL || bibliotheque->livres == NULL) {
+        fprintf(stderr, "Erreur : bibliothèque non initialisée\n");
+        return 0;
+    }
+    for (int i = 0; i < bibliotheque->nb_livres; i++) {
+        if (strcmp(bibliotheque->livres[i].isbn, isbn) == 0) {
+            return 0; // ISBN déjà existant
+        }
+    }
+    return 1; // ISBN unique
 }
