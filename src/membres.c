@@ -5,6 +5,7 @@
 #include <stdlib.h>
 
 #include "utilitaire.h"
+#include "bibliotheque.h"
 
 void saisir_membre(Membre *membre, int prochain_id) {
     membre->id_membre = prochain_id;
@@ -64,7 +65,7 @@ void saisir_membre(Membre *membre, int prochain_id) {
     printf("\n[Succès] Membre enregistré avec l'ID : %d\n", membre->id_membre);
 }
 
-void afficher_membre(const Membre *membre) {
+void afficher_membre(const Membre *membre, const struct Bibliotheque *biblio) {
     if (membre == NULL) {
         fprintf(stderr, "[Erreur 💥] Impossible d'afficher : pointeur membre NULL.\n");
         return;
@@ -83,6 +84,14 @@ void afficher_membre(const Membre *membre) {
         printf("Aucun livre en cours\n");
     } else {
         printf("%d livre(s) emprunté(s)\n", membre->nb_emprunts_actifs);
+        if (biblio != NULL) {
+            printf("  Livres empruntés :\n");
+            for (int i = 0; i < biblio->nb_livres; i++) {
+                if (biblio->livres[i].est_emprunte == 1 && biblio->livres[i].id_emprunteur == membre->id_membre) {
+                    printf("    - %s (ID: %d)\n", biblio->livres[i].titre, biblio->livres[i].id);
+                }
+            }
+        }
     }
 
     printf("--------------------------------------------------\n");

@@ -66,9 +66,7 @@ int valider_numero(const char *numero) {
     return 1;
 }
 
-int isLeapYear(int year) {
-    return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
-}
+/* isLeapYear supprimé : doublon de est_bissextile (définie plus bas) */
 
 int valider_date (const char *date){
     int y, m, d;
@@ -97,7 +95,7 @@ int valider_date (const char *date){
     if (m == 4 || m == 6 || m == 9 || m == 11) { // Avril, Juin, Septembre, Novembre ont 30 jours
         if (d > 30) return 0;
     } else if (m == 2) { // Février
-        if (isLeapYear(y)) {
+        if (est_bissextile(y)) {
             if (d > 29) return 0; // Année bissextile, Février a 29 jours
         } else {
             if (d > 28) return 0; // Année non bissextile, Février a 28 jours
@@ -204,6 +202,17 @@ void modifier_annee_publication (Bibliotheque *b, int index) {
     }
 }
 
+static int demander_confirmation(const char *message) {
+    char reponse[10];
+    printf("%s (o/n) : ", message);
+    if (fgets(reponse, sizeof(reponse), stdin)) {
+        if (reponse[0] == 'o' || reponse[0] == 'O') {
+            return 1;
+        }
+    }
+    return 0;
+}
+
 void menu_catalogue_livre (Bibliotheque *biblio) {
     int choix_cat = 0;
     do {
@@ -221,7 +230,7 @@ void menu_catalogue_livre (Bibliotheque *biblio) {
             case 3: {
                 int choix_rech;
                 printf("\n--- Rechercher par ---\n");
-                printf("1. ID\n2. Auteur\n3. Titre\n4. Annuler\nChoix : ");
+                printf("1. ID\n2. Auteur\n3. Titre\n4. ISBN\n5. Annuler\nChoix : ");
                 if (scanf("%d", &choix_rech) != 1) {
                     vider_buffer();
                     printf("Choix invalide.\n");
@@ -258,11 +267,17 @@ void menu_catalogue_livre (Bibliotheque *biblio) {
                     fgets(titre, TAILLE_MAX_TITRE, stdin);
                     titre[strcspn(titre, "\n")] = 0;
                     idx = rechercher_livre_par_titre(biblio, biblio->nb_livres, titre);
-                } else if (choix_rech == 4) {printf("Choix annulé.\n"); break;}
+                } else if (choix_rech == 4) {
+                    char isbn[TAILLE_MAX_ISBN];
+                    printf("ISBN du livre : ");
+                    fgets(isbn, TAILLE_MAX_ISBN, stdin);
+                    isbn[strcspn(isbn, "\n")] = 0;
+                    idx = rechercher_livre_par_isbn(biblio, biblio->nb_livres, isbn);
+                } else if (choix_rech == 5) {printf("Choix annulé.\n"); break;}
 
                 if(idx != -1) {
                     afficher_livre(&biblio->livres[idx]);
-                } else {
+                } else if (choix_rech >= 1 && choix_rech <= 4) {
                     printf("Livre introuvable.\n");
                 }
                 break;
@@ -329,9 +344,15 @@ void menu_catalogue_livre (Bibliotheque *biblio) {
                     printf("ID à supprimer : ");
                     int id;
                     if (scanf("%d", &id) == 1) {
-                        supprimer_livre(biblio, id);
+                        vider_buffer();
+                        if (demander_confirmation("Êtes-vous sûr de vouloir supprimer ce livre ?")) {
+                            supprimer_livre(biblio, id);
+                        } else {
+                            printf("Suppression annulée.\n");
+                        }
                     } else {
                         fprintf(stderr, "ID invalide.\n");
+                        vider_buffer();
                     }
                     break; 
                 }
@@ -340,7 +361,11 @@ void menu_catalogue_livre (Bibliotheque *biblio) {
                     char auteur[TAILLE_MAX_AUTEUR];
                     fgets(auteur, TAILLE_MAX_AUTEUR, stdin);
                     auteur[strcspn(auteur, "\n")] = 0;
-                    supprimer_livre_par_auteur(biblio, auteur);
+                    if (demander_confirmation("Êtes-vous sûr de vouloir supprimer les livres de cet auteur ?")) {
+                        supprimer_livre_par_auteur(biblio, auteur);
+                    } else {
+                        printf("Suppression annulée.\n");
+                    }
                     break; 
                 }
                 case 3: {
@@ -348,7 +373,11 @@ void menu_catalogue_livre (Bibliotheque *biblio) {
                     char titre[TAILLE_MAX_TITRE];
                     fgets(titre, TAILLE_MAX_TITRE, stdin);
                     titre[strcspn(titre, "\n")] = 0;
-                    supprimer_livre_par_titre(biblio, titre);
+                    if (demander_confirmation("Êtes-vous sûr de vouloir supprimer ce livre ?")) {
+                        supprimer_livre_par_titre(biblio, titre);
+                    } else {
+                        printf("Suppression annulée.\n");
+                    }
                     break; 
                 }
                 case 4: {
@@ -356,7 +385,11 @@ void menu_catalogue_livre (Bibliotheque *biblio) {
                     char isbn[TAILLE_MAX_ISBN];
                     fgets(isbn, TAILLE_MAX_ISBN, stdin);
                     isbn[strcspn(isbn, "\n")] = 0;
-                    supprimer_livre_par_isbn(biblio, isbn);
+                    if (demander_confirmation("Êtes-vous sûr de vouloir supprimer ce livre ?")) {
+                        supprimer_livre_par_isbn(biblio, isbn);
+                    } else {
+                        printf("Suppression annulée.\n");
+                    }
                     break; 
                 }
                 case 5: {
@@ -427,11 +460,16 @@ void menu_gestion_membres (Bibliotheque *biblio) {
                     int id_a_radier;
                     printf("Entrez l'ID du membre à radier : ");
                     if (scanf("%d", &id_a_radier) == 1) {
-                        radier_membre(biblio, id_a_radier);
+                        vider_buffer();
+                        if (demander_confirmation("Êtes-vous sûr de vouloir radier ce membre ?")) {
+                            radier_membre(biblio, id_a_radier);
+                        } else {
+                            printf("Radiation annulée.\n");
+                        }
                     } else {
                         fprintf(stderr, "ID invalide.\n");
+                        vider_buffer();
                     }
-                    vider_buffer();
                 }
                 break;
             case 4:
@@ -506,13 +544,13 @@ int rechercher_livre_par_id (const Bibliotheque *biblio, int taille, int id) {
 
 int rechercher_livre_par_auteur(const Bibliotheque *biblio, int taille, const char *auteur) {
     if (biblio == NULL || biblio->livres == NULL) {
-        fprintf(stderr, "Erreur : bibliothèque non initialisée\n");
+        fprintf(stderr, "❌ Erreur : bibliothèque non initialisée\n");
         return -1;
     }
     Livre *livres = biblio->livres;
 
     if(auteur == NULL || strlen(auteur) == 0) {
-        fprintf(stderr, "Erreur : L'auteur ne doit pas être vide.");
+        fprintf(stderr, "❌ Erreur : L'auteur ne doit pas être vide.");
         return -1;
     }
     char *auteur_lower = str_toLower(auteur, TAILLE_MAX_AUTEUR);
@@ -652,7 +690,7 @@ int valider_date_inscription_membre(const char *date) {
     sscanf(date, "%d-%d-%d", &a, &m, &j);
 
     // 3. Validation des plages
-    if (a < 2000 || a > 2026) return 0; // Cohérence (on est en 2026)
+    if (a < 2000 || a > annee_actuelle()) return 0; // Année entre 2000 et aujourd'hui
     if (m < 1 || m > 12) return 0;
     if (j < 1 || j > 31) return 0;
 

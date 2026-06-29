@@ -33,12 +33,7 @@ void vider_buffer();
  */
 int valider_numero (const char *numero);
 
-/**
- * @brief Fonction pour vérifier si une année est bissextile
- * @param year
- * @return Un entier 1 représentant le succès et 0 l'échec.
- */
-int isLeapYear(int year);
+/* isLeapYear supprimé : doublon de est_bissextile */
 
 /**
  * @brief Fonction qui permet de valider une date au format YYYY-MM-DD

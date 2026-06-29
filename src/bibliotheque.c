@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 #include "../include/bibliotheque.h"
 #include "../include/livre.h"
@@ -177,7 +178,7 @@ void afficher_membres(const Bibliotheque *bibliotheque) {
         return;
     }
     for (int i = 0; i < bibliotheque->nb_membres; i++) {
-        afficher_membre(&bibliotheque->membres[i]);
+        afficher_membre(&bibliotheque->membres[i], bibliotheque);
     }
 }
 
@@ -272,14 +273,22 @@ void radier_membre(Bibliotheque *bibliotheque, int id_membre) {
 
 void sauvegarder_bibliotheque(const Bibliotheque *bibliotheque) {
     FILE *f = fopen(bibliotheque->fichier_livres, "w");
-    if (!f) return;
+    if (!f) {
+        fprintf(stderr, "❌ Erreur : Impossible d'ouvrir '%s' pour la sauvegarde des livres.\n",
+                bibliotheque->fichier_livres);
+        return;
+    }
     for (int i = 0; i < bibliotheque->nb_livres; i++) {
         sauvegarder_livre(&bibliotheque->livres[i], f);
     }
     fclose(f);
 
     f = fopen(bibliotheque->fichier_membres, "w");
-    if (!f) return;
+    if (!f) {
+        fprintf(stderr, "❌ Erreur : Impossible d'ouvrir '%s' pour la sauvegarde des membres.\n",
+                bibliotheque->fichier_membres);
+        return;
+    }
     for (int i = 0; i < bibliotheque->nb_membres; i++) {
         sauvegarder_membre(&bibliotheque->membres[i], f);
     }
@@ -331,6 +340,17 @@ void effectuer_retour(Bibliotheque *bibliotheque, int id_livre) {
         bibliotheque->membres[idx_m].nb_emprunts_actifs--;
     }
 
+    FILE *f_hist = fopen("historique.dat", "a");
+    if (f_hist) {
+        char aujourdhui[11];
+        time_t t = time(NULL);
+        strftime(aujourdhui, 11, "%Y-%m-%d", localtime(&t));
+        fprintf(f_hist, "[%s] Retour: Livre '%s' (ID %d) retourné par Membre (ID %d)\n", aujourdhui, bibliotheque->livres[idx_l].titre, id_livre, id_m);
+        fclose(f_hist);
+    } else {
+        fprintf(stderr, "Avertissement : Impossible d'écrire dans l'historique.\n");
+    }
+
     printf("Livre retourné avec succès.\n");
 }
 
@@ -346,7 +366,7 @@ void charger_bibliotheque(Bibliotheque *bibliotheque) {
     FILE *f_livres = fopen(bibliotheque->fichier_livres, "r");
     if (f_livres) {
         Livre l;
-        char ligne[256];
+        char ligne[512];
         while (fgets(ligne, sizeof(ligne), f_livres)) {
             if (sscanf(ligne, "%d|%13[^|]|%99[^|]|%49[^|]|%d|%d|%d|%10s",
                    &l.id, l.isbn, l.titre, l.auteur, &l.annee_publication,
@@ -364,7 +384,7 @@ void charger_bibliotheque(Bibliotheque *bibliotheque) {
     FILE *f_membres = fopen(bibliotheque->fichier_membres, "r");
     if (f_membres) {
         Membre m;
-        char ligne[256];
+        char ligne[512];
         while (fgets(ligne, sizeof(ligne), f_membres)) {
             if (sscanf(ligne, "%d|%49[^|]|%10[^|]|%10[^|]|%d",
                        &m.id_membre, m.nom, m.telephone, m.date_inscription, &m.nb_emprunts_actifs) == 5) {

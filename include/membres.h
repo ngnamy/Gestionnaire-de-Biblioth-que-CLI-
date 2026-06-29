@@ -33,13 +33,16 @@ typedef struct Membre {
  */
 void saisir_membre(Membre *membre, int prochain_id);
 
+struct Bibliotheque; // Forward declaration
+
 /**
  * @brief Fonction pour afficher les informations d'un membre.
  * Elle prend en paramètre un pointeur vers une structure Membre et affiche les champs de cette structure de manière formatée, en affichant l'identifiant du membre, son nom, et le nombre d'emprunts actifs qu'il a actuellement.
  * @param membre Un pointeur vers une structure Membre dont les informations seront affichées.
+ * @param biblio Un pointeur vers la bibliothèque pour afficher les titres empruntés (peut être NULL).
  * @return void
  */
-void afficher_membre(const Membre *membre);
+void afficher_membre(const Membre *membre, const struct Bibliotheque *biblio);
 
 /**
  * @brief Fonction pour sauvegarder les informations d'un membre dans un fichier.
