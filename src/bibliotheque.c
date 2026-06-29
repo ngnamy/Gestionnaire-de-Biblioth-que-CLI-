@@ -406,11 +406,23 @@ void lister_livres_en_retard(const Bibliotheque *bibliotheque, const char *date_
 }
 
 int generer_id_livre(const Livre *livres, int nb_livres) {
-    return (nb_livres == 0) ? 1 : livres[nb_livres - 1].id + 1;
+    if (nb_livres == 0) return 1;
+
+    int max_id = livres[0].id;
+    for (int i = 1; i < nb_livres; i++) {
+        if (livres[i].id > max_id) max_id = livres[i].id;
+    }
+    return max_id + 1;
 }
 
 int generer_id_membre(const Membre *membres, int nb_membres) {
-    return (nb_membres == 0) ? 1 : membres[nb_membres - 1].id_membre + 1;
+    if (nb_membres == 0) return 1;
+
+    int max_id = membres[0].id_membre;
+    for (int i = 1; i < nb_membres; i++) {
+        if (membres[i].id_membre > max_id) max_id = membres[i].id_membre;
+    }
+    return max_id + 1;
 }
 
 void modifier_nom (Bibliotheque *bibliotheque, int index) {
@@ -517,7 +529,12 @@ void modifier_membre (Bibliotheque *bibliotheque, int id_membre) {
         printf("3. Date d'inscription\n");
         printf("4. Quitter\n");
         printf("Entrez votre choix : ");
-        scanf("%d", &choix);
+        if (scanf("%d", &choix) != 1) {
+            fprintf(stderr, "❌ Erreur : Le choix doit être un entier.\n");
+            vider_buffer();
+            choix = 0;
+            continue;
+        }
         vider_buffer();
 
         switch (choix) {
