@@ -79,23 +79,6 @@ void modifier_auteur (Bibliotheque *b, int index);
 void modifier_annee_publication (Bibliotheque *b, int index);
 
 /**
- * @brief Procédure permet d'afficher le menu de catalogue des livres
- * @param biblio .
- */
-void menu_catalogue_livre (Bibliotheque *biblio);
-
-/**
- * @brief Procédure permet d'afficher le menu de catalogue des livres
- * 
- */
-void menu_gestion_membres (Bibliotheque *biblio);
-
-/**
- * @brief Procédure permet d'afficher le menu emprunt et retour de livre
- */
-void menu_gestion_emprunt_retour (Bibliotheque *biblio);
-
-/**
  * @brief Fonction permetant de rechercher un livre dans la bibliothèque par son identifient. 
  * @param biblio Un pointeur vers la structure de la bibliothèque.
  * @param id Un entier représentant l'identifient du livre à rechercher.

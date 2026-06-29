@@ -68,6 +68,10 @@ void afficher_bibliotheque(const Bibliotheque *bibliotheque){
     printf("\n=== Bibliothèque : %d livre(s) ===\n", bibliotheque->nb_livres);
     for (int i = 0; i < bibliotheque->nb_livres; i++) {
         afficher_livre(&bibliotheque->livres[i]);
+        if ((i + 1) % 5 == 0 && (i + 1) < bibliotheque->nb_livres) {
+            printf("\n--- Appuyez sur Entree pour voir la page suivante ---");
+            vider_buffer();
+        }
     }
 }
 
@@ -179,6 +183,10 @@ void afficher_membres(const Bibliotheque *bibliotheque) {
     }
     for (int i = 0; i < bibliotheque->nb_membres; i++) {
         afficher_membre(&bibliotheque->membres[i], bibliotheque);
+        if ((i + 1) % 5 == 0 && (i + 1) < bibliotheque->nb_membres) {
+            printf("\n--- Appuyez sur Entree pour voir la page suivante ---");
+            vider_buffer();
+        }
     }
 }
 

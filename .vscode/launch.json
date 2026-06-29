@@ -7,9 +7,9 @@
       "request": "launch",
       "args": [],
       "stopAtEntry": false,
-      "externalConsole": false,
-      "cwd": ".",
-      "program": "build/Debug/outDebug",
+      "externalConsole": true,
+      "cwd": "c:/Users/opja1/Programmation/C/projets_personnelle/Gestionnaire-de-Biblioth-que-CLI-/src",
+      "program": "c:/Users/opja1/Programmation/C/projets_personnelle/Gestionnaire-de-Biblioth-que-CLI-/src/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [

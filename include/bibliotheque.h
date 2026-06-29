@@ -272,10 +272,12 @@ int rechercher_membre(const Bibliotheque *bibliotheque, int id_membre);
 void radier_membre(Bibliotheque *bibliotheque, int id_membre);
 
 /**
- * @brief Fonction pour trier les membres de la bibliothèque par ordre alphabétique de leur nom.
- * Elle prend en paramètre un pointeur vers une structure Bibliotheque et trie le tableau de membres de la bibliothèque en utilisant la fonction comparer_membres pour comparer les noms des membres et les réorganiser dans l'ordre alphabétique.
- * @param bibliotheque Un pointeur vers une structure Bibliotheque dont les membres seront triés.
- * @return void
+ * @brief Fonction pour générer un identifiant unique pour un nouveau livre.
+ * Elle prend en paramètre un pointeur vers un tableau de structures Livre et le nombre de livres,
+ * et retourne le prochain identifiant unique (le maximum actuel + 1).
+ * @param livres Un pointeur vers le tableau de livres.
+ * @param nb_livres Le nombre de livres actuels.
+ * @return int Le nouvel identifiant.
  */
 int generer_id_livre(const Livre *livres, int nb_livres);
 

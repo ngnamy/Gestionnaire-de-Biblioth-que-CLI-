@@ -6,6 +6,7 @@
 #include "../include/bibliotheque.h"
 #include "../include/membres.h"
 #include "../include/utilitaire.h"
+#include "../include/menu.h"
 
 int main () {
     printf("=== Bienvenue dans le gestionnaire de bibliothèque CLI ===\n");
