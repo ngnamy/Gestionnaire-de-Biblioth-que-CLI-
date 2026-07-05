@@ -5,6 +5,21 @@ SOURCES = src/main.c src/livre.c src/bibliotheque.c src/membres.c src/utilitaire
 OBJECTS = $(SOURCES:.c=.o)
 EXECUTABLE = start
 
+# Portable remove command: use cmd /C del on Windows, rm on Unix
+ifeq ($(OS),Windows_NT)
+RM = cmd /C del /F /Q
+EXE = .exe
+else
+RM = rm -f
+EXE =
+endif
+
+# Files to remove for clean (use backslashes on Windows)
+CLEAN_FILES = $(OBJECTS) $(EXECUTABLE)$(EXE)
+ifeq ($(OS),Windows_NT)
+CLEAN_FILES := $(subst /,\\,$(CLEAN_FILES))
+endif
+
 all: $(EXECUTABLE)
 
 $(EXECUTABLE): $(OBJECTS)
@@ -17,8 +32,6 @@ run: $(EXECUTABLE)
 	./$(EXECUTABLE)
 
 clean:
-	-del /F /Q src\*.o 2>nul
-	-del /F /Q $(EXECUTABLE).exe 2>nul
-	-del /F /Q $(EXECUTABLE) 2>nul
+	-@$(RM) $(CLEAN_FILES)
 
 .PHONY: all clean run

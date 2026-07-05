@@ -66,8 +66,6 @@ int valider_numero(const char *numero) {
     return 1;
 }
 
-/* isLeapYear supprimé : doublon de est_bissextile (définie plus bas) */
-
 int valider_date (const char *date){
     int y, m, d;
 
@@ -201,9 +199,6 @@ void modifier_annee_publication (Bibliotheque *b, int index) {
         fprintf(stderr, "[Erreur] Année invalide. Veuillez recommencer.\n");
     }
 }
-
-
-
 
 int rechercher_livre_par_id (const Bibliotheque *biblio, int taille, int id) {
     if (biblio == NULL || biblio->livres == NULL) {

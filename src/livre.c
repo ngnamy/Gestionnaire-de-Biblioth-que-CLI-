@@ -202,8 +202,6 @@ int comparer_livres_par_id(const Livre *livre_a, const Livre *livre_b) {
     return livre_a->id - livre_b->id;
 }
 
-
-
 void sauvegarder_livre(const Livre *livre, FILE *fichier) {
     if (livre == NULL || fichier == NULL) {
         fprintf(stderr, "Erreur : Impossible de sauvegarder un livre ou d'écrire dans un fichier NULL.\n");
